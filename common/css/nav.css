@@ -1,0 +1,247 @@
+/* Reset some default styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e0e2e4;
+}
+
+/* Style the navbar container */
+nav {
+    background-color: #f3f3f3;
+    color: #fff;
+    padding: 10px 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+/* Style the logo */
+.logo {
+    display: inline-block;
+    margin-left: 20px; /* Add some space to the left of the logo */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Style the navigation list */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Make the list items horizontal */
+}
+
+/* Style the navigation items */
+li {
+    margin-right: 20px; /* Add space between each item */
+}
+
+/* Style the links */
+a {
+    text-decoration: none; /* Remove underlines from links */
+    color: #fff; /* Text color of links */
+}
+
+/* Style the links on hover */
+a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    color: #000000;
+}
+
+/* Style the input field */
+.search-container input[type="text"] {
+    width: 100%;
+    padding: 10px 40px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    background-color: #e0e2e4;
+}
+
+/* Style the input field when focused */
+.search-container input[type="text"]:focus {
+    outline: 1px solid #800000;
+    box-shadow: 0 0 4px #800000;
+}
+
+/* Style the magnifying glass icon */
+.search-container img {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.nav-profile {
+    position: relative;
+    padding: 0 200px;
+    align-self: center;
+    cursor: pointer;
+}
+/* Style the side navigation bar */
+.sidenav {
+    background-color: #800000;
+    width: 450px; /* Adjust the width as needed */
+    position: absolute;
+    top: 106px; /* Adjust the top position to push it below the navbar */
+    left: 0; /* Show the sidebar by default */
+    height: 100%;
+    overflow-x: hidden;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style the side navigation links */
+.sidenav ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidenav li {
+    margin-bottom: 20px;
+}
+
+.sidenav a {
+    text-decoration: none;
+    color: white;
+    font-size: 32px;
+}
+
+/* Hide the side navigation by default */
+.sidenav.hide {
+    left: -1000px;
+}
+.menu-icon {
+    font-size: 32px; /* Adjust the font size to change the icon's size */
+    cursor: pointer;
+    color: #800000;
+    margin: 0 20px 15px;
+}
+.sidenav-item{
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    align-items: start;
+    padding: 20px 0;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-link {
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+
+}
+
+.sidebar-link.active-item {
+    opacity: 1; /* Set full opacity for active items */
+}
+.sidebar-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+.sidebar-link {
+    position: relative;
+    padding-left: 40px;
+    cursor: pointer;
+    font-size: 32px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+
+}
+
+.sidebar-link.active-item::before {
+    background-color: #FFFF00;
+    opacity: .7;
+}
+
+
+.dropdown-container .sidebar-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+.dropdown-container .sidebar-link {
+    position: relative;
+    padding: 10px 70px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+
+.dropdown-container .sidebar-link.active-item {
+    opacity: 1; /* Set full opacity for active items */
+}
+
+.dropdown-container .sidebar-link.active-item::before {
+    background-color: #FFFF00;
+    opacity: .7;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #800000;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.dropdown-menu.show {
+    display: flex;
+}
+
+/* Style for individual menu items */
+.dropdown-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 40px;
+}
+
+/* Add a divider style */
+.dropdown-menu .divider {
+    width: 100%;
+    height: 1px;
+    background-color: #fff; /* Divider color */
+    margin: 8px 0; /* Adjust the margin to control the divider spacing */
+}
