@@ -1,5 +1,10 @@
 <?php
-if($_SESSION['role'] != 'ADMIN'){
-        header('location:  http://localhost/student_monitoring/index.php');
+if($_SESSION['role'] == 'STUDENT'){
+        header('location:  http://localhost/student_monitoring/pages/   student');
+    exit();
+}
+
+if($_SESSION['role'] == 'STUDENT'){
+        header('location:  http://localhost/student_monitoring/pages/   teacher');
     exit();
 }

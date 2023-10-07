@@ -4,7 +4,7 @@
             &#9776;
         </div>
         <div class="logo">
-            <img src="../../common/images/logo/lpu-logo.png" alt="Logo" style="width: 10rem;height: 5rem">
+            <img src="../../common/images/logo/lpu-logo.png" alt="Logo" style="width: 10rem;height: 10rem">
         </div>
         <div class="search-container">
             <input type="text">
@@ -25,8 +25,15 @@
 
     <div class="sidenav">
         <div class="sidenav-item">
-            <a class="sidebar-link <?php echo $current_page === 'college' ? 'active-item' : ''; ?>" href="college.php" style="color: white">College</a>
-            <a class="sidebar-link <?php echo $current_page === 'accounts' ? 'active-item' : ''; ?>" href="accounts.php" style="color: white">Accounts</a>
+            <a class="sidebar-link <?php echo $current_page === 'college' && $current_dropdown === null ? 'active-item' : ''; ?>" href="college.php" style="color: white">College</a>
+            <?php if ($current_page === 'college') { ?>
+                <ul class="dropdown-container">
+                    <li><a href="#" class="sidebar-link <?php echo $current_dropdown === 'college_business' ? 'active-item' : ''; ?>">College of Business Administration</a></li>
+                    <li><a href="computer_studies.php" class="sidebar-link <?php echo $current_dropdown === 'computer_studies' ? 'active-item' : ''; ?>">College of Computer Studies</a></li>
+                    <li><a href="#" class="sidebar-link <?php echo $current_dropdown === 'college_engineering' ? 'active-item' : ''; ?>">College of Engineering</a></li>
+                </ul>
+            <?php }?>
+            <a class="sidebar-link <?php echo $current_page === 'accounts' && $current_dropdown === null ? 'active-item' : ''; ?>" href="accounts.php" style="color: white">Accounts</a>
             <?php if ($current_page !== 'college') { ?>
                 <ul class="dropdown-container">
                     <li><a href="student_account.php" class="sidebar-link <?php echo $current_dropdown === 'student' ? 'active-item' : ''; ?>">Student</a></li>

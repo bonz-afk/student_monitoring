@@ -1,7 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth.php';
-include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth_admin.php';
 
 ?>
 <!DOCTYPE html>

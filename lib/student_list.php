@@ -1,6 +1,12 @@
 <?php
 
-$query = 'SELECT * FROM tb_user where STATUS ="ON" AND ROLE = "STUDENT"';
+$query = "SELECT *, CONCAT(
+                UPPER(SUBSTRING(LASTNAME, 1, 1)), LOWER(SUBSTRING(LASTNAME, 2)),
+                ' ',
+                UPPER(SUBSTRING(FIRSTNAME, 1, 1)), LOWER(SUBSTRING(FIRSTNAME, 2)),
+                ' ',
+                UPPER(LEFT(MIDDLENAME, 1)),'.'
+            ) as fullname FROM tb_user where STATUS = 'ON' AND ROLE = 'STUDENT'";
 $result = mysqli_query($mysqli, $query);
 
 if (!$result) {

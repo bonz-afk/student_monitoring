@@ -106,7 +106,6 @@ include_once  $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
     <body class="signup-bg">
         <form method="POST" id="signupForm">
             <div class="signup-container">
-
                    <img class="img-bg" src="common/images/signup-img.png" >
                    <div class="signup-form-container">
 

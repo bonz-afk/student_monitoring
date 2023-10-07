@@ -15,399 +15,114 @@ ini_set('display_errors', 1);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="../../common/css/common.css">
     <link rel="stylesheet" href="../../common/css/nav.css">
     <style>
-        .main-account {
-            margin-left: 400px; /* Adjust the margin to match the sidebar width */
-            transition: margin-left 0.3s; /* Add smooth transition for opening/closing sidebar */
+        .college-container {
+            margin-left: 400px;
+            transition: margin-left 0.3s;
         }
-        .account-container-title{
+        .college-container-title{
             display: flex;
             justify-content: center;
         }
-        .account-title{
+        .college-title{
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .account-title p {
-            font-size: 65px;
-            font-weight: 900;
-            font-family: 'Montserrat', sans-serif;
+        .college.font-mont {
+            font-size: 50px;
         }
-
-        .account-button-content{
-            display: flex;
-            justify-content: space-around;
-            gap: 695px;
-        }
-
-        .account-button-content > div:first-child {
-            align-self: flex-start;
-        }
-
-        .account-button-content > div:last-child {
-            align-self: center;
-        }
-        .btn-maroon{
-            border-radius: 5px;
-            border: 0;
-            padding: 20px;
-            background-color: #800000;
-            color: white;
-            cursor: pointer;
-        }
-
-        .table-container {
-            width: 100%;
-            margin: 0 auto;
-            height: 400px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            background-color: #FFFFFF;
-            max-width: 1522px;
-        }
-
-        .course-table {
-            width: 100%;
-            background-color: #FFFFFF;
-            border-collapse: collapse;
-        }
-
-        .course-table th{
-            padding: 20px;
-            font-size: 20px;
-        }
-
-        .course-table td {
-            padding: 10px; /* Add padding to create spacing */
-            font-size: 20px;
-        }
-
-        .course-table thead,tbody {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            width: 100%;
-            margin: 200px auto;
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            max-width: 840px;
-        }
-
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .modal-title p {
-            font-size: 42px;
-            font-weight: 900;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .modal-body p {
-            font-size: 42px;
-            font-weight: 900;
-            font-family: 'Montserrat', sans-serif;
-        }
-        .college-body{
-            overflow: hidden;
-        }
-
-        .account-title img {
-            width: 250px;
-            height: 250px;
-        }
-
-        @media only screen and (max-height: 771px) {
-            .college-body{
-                overflow: scroll;
-            }
-            .table-container{
-                height: 100%;
-            }
-        }
-
-        @media only screen and (max-width: 1336px) {
-            .account-title p {
-                font-size: 40px;
-            }
-            .account-title img {
-                width: 100px;
-                height: 100px;
-            }
-            .table-container{
-                max-width: 670px;
-            }
-            .account-button-content{
-                justify-content: space-evenly;
-                gap: 0 !important;
-            }
-            .modal-content{
-                width: 550px;
-
-            }
-            .modal-content p{
-                font-size: 20px;
-
-            }
-        }
-        @media only screen and (max-width: 1336px) {
-            .account-title p {
-                font-size: 40px;
-            }
-            .account-title img {
-                width: 100px;
-                height: 100px;
-            }
-            .table-container{
-                max-width: 670px;
-            }
-            .account-button-content{
-                justify-content: space-evenly;
-                gap: 0 !important;
-            }
-            .modal-content{
-                width: 550px;
-
-            }
-            .modal-content p{
-                font-size: 20px;
-
-            }
-        }
-        @media only screen and (min-width: 1337px) and (max-width: 2000px) {
-            .account-title p {
-                font-size: 50px;
-            }
-            .account-title img {
-                width: 150px;
-                height: 150px;
-            }
-            .table-container{
-                max-width: 770px;
-            }
-            .account-button-content{
-                justify-content: space-evenly;
-                gap: 0 !important;
-            }
-            .modal-content{
-                width: 750px;
-
-            }
-            .modal-content p{
-                font-size: 30px;
-
-            }
-        }
-
-        @media only screen and (max-width: 1200px) {
-            .account-title p {
-                font-size: 40px;
-            }
-            .account-title img {
-                width: 100px;
-                height: 100px;
-            }
-            .table-container{
-                max-width: 565px;
-            }
-            .account-button-content{
-                justify-content: space-evenly;
-                gap: 0 !important;
-            }
-        }
-
-        .btn-save{
-            border-radius: 5px;
-            border: 0;
-            background-color: #800000;
-            color: white;
-            cursor: pointer;
-            width: auto;
-            padding: 15px 40px;
-            font-size: 20px;
-        }
-        .edit-course{
+        .list-college-container{
             display: flex;
             justify-content: center;
-            flex-direction: column;
             align-items: center;
+            gap: 50px;
+        }
+        .college-main{
+            margin: 100px auto;
         }
 
-        .account-button-content.hide {
-            gap: 300px;
-        }
-
-        .add-course{
+        .college-item{
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-        }
-
-        .edit-course > input, .add-course > input{
-            width: 100%;
-            height: 35px;
-            max-width: 630px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 0;
-            background-color: #e0e2e4;
+            background: #FFFFFF;
+            color: #000000;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
             padding: 10px;
-            text-indent: 10px;
-            font-size: 20px;
-            color: #800000;
+            transition: width 0.3s, height 0.3s;
+            cursor: pointer;
         }
 
-        .edit-course > edit-save-container,  .add-course > add-save-container{
+        .college-item:hover{
+            text-decoration: none;
+            font-size: 30px;
+        }
+
+
+        .college-item:hover img{
+            width: 15rem !important;
+            height: 15rem !important;
+        }
+
+        .college-item:hover p{
+            width: 200px;
+        }
+
+        .college-item-content p{
+            width: 130px;
+            text-align: center;
+            margin: 10px 0 0;
+            letter-spacing: 1px;
+        }
+
+        .college-item-content{
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 0;
+            flex-direction: column;
         }
-
-        .edit-course > input:focus, .add-course > input:focus{
-            border: 0;
-        }
-
-        .edit-course > input::placeholder,.add-course > input::placeholder{
-            color: #800000;
-            opacity: .7;
-            font-size: 15px;
-        }
-        .btn-cancel{
-            border-radius: 5px;
-            border: 0;
-            background-color: #b2b2b2;
-            color: white;
-            cursor: pointer;
-            width: auto;
-            padding: 15px 28px;
-            font-size: 20px;
-        }
-
-        small.code-message.error,small.desc-message.error,small.code-message-edit.error,small.desc-message-edit.error {
-            align-self: start;
-            margin-left: 95px;
-            color: red;
-        }
-
-        .code-message.valid,.desc-message.valid,small.code-message-edit.valid,small.desc-message-edit.valid{
-            color: #5cb85c;
-            align-self: start;
-            margin-left: 95px;
-        }
-
     </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
     <body class="college-body">
     <?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>
-        <div class="main-account">
-            <div class="account-container-title">
-                <div class="account-title">
-                    <img src="../../common/images/logo/css-logo.png"  />
-
-                    <p>College Of Computer Studies</p>
+    <div class="college-container">
+        <div class="college-main">
+            <div class="college-container-title">
+                <div class="college-title">
+                    <p class="college font-mont">List of Colleges</p>
                 </div>
             </div>
-            <div class="account-button-content">
-                <div>
-                    <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="80" height="80" />
-                </div>
-                <div>
-                    <button class="btn-maroon openModalBtn" data-modal="addCourseModal">Add Course</button>
-                </div>
-            </div>
-            <div class="table-container">
-                <table class="course-table">
-                    <thead>
-                    <tr>
-                        <th>Course ID</th>
-                        <th>Course Name</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($courseData as $course) {?>
-                    <tr>
-
-                        <td><?php echo $course['COURSE_CODE'] ?></td>
-                        <td><?php echo $course['COURSE_DESC'] ?></td>
-                        <td><i  class="fa-solid fa-pen-to-square fa-xl openModalBtn" style="color: #800000;cursor: pointer" data-modal="myModal" onclick="showCourse(<?php echo $course['ID']; ?>)"></i>
-                            <i class="fa-solid fa-trash fa-xl"  style="color: #800000;cursor: pointer" onclick="courseProcess('delete',<?php echo $course['ID']; ?>)"></i></td>
-                        <?php } ?>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="list-college-container">
+                <a href="#" class="college-item">
+                    <div class="college-item-content">
+                        <p>College of Business Administration</p>
+                        <img src="../../common/images/education.png" alt="College of Business Administration" style="width: 10rem;height: 10rem;margin-top: -10px;">
+                    </div>
+                </a>
+                <a href="#" class="college-item">
+                    <div class="college-item-content">
+                        <p>College of Business Administration</p>
+                        <img src="../../common/images/css-logo.png" alt="College of Computer Studies" style="width: 10rem;height: 10rem;margin-top: -10px;">
+                    </div>
+                </a>
+                <a href="#" class="college-item">
+                    <div class="college-item-content">
+                        <p>College of Engineering</p>
+                        <img src="../../common/images/engineering.png" alt="College of Engineering" style="width: 10rem;height: 10rem;margin-top: 10px;">
+                    </div>
+                </a>
             </div>
         </div>
-    <div class="modal" id="addCourseModal">
-        <div class="modal-content">
-            <div class="modal-title">
-                <p>Add Course</p>
-            </div>
-            <div class="modal-body">
-                <form id="addCourse">
-                    <div class="add-course">
-                        <input type="text" class="" id="add_course_code" name="add_course_code" maxlength="255" placeholder="Course Code">
-                        <small class="code-message"></small>
-                        <input type="text" class="" id="add_course_desc" name="add_course_desc"  maxlength="255" placeholder="Course Description">
-                        <small class="desc-message"></small>
-                        <div class="add-save-container">
-                            <button type="button" class="btn-save" onclick="courseProcess('add')">Save</button>
-                            <button type="button" class="closeModalBtn btn-cancel">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
-    <div class="modal" id="myModal">
-        <div class="modal-content">
-            <div class="modal-title">
-                <p>Edit Course</p>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="edit-course">
-                        <input type="text" id="course_id" hidden>
-                        <input type="text" class="" id="course_code_edit" name="course_code_edit" placeholder="Course Code">
-                        <small class="code-message-edit"></small>
-                        <input type="text" class="" id="course_desc_edit" name="course_desc_edit" placeholder="Course Description">
-                        <small class="desc-message-edit"></small>
-                        <div class="edit-save-container">
-                            <button type="button" class="btn-save" onclick="courseProcess('edit')">Save</button>
-                            <button type="button" class="closeModalBtn btn-cancel">Cancel</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
     <script src="../../common/js/external/jquery-3.7.1.min.js"></script>
     <script src="../../common/js/common.js"></script>
     <script src="../../common/js/nav.js"></script>

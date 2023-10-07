@@ -92,7 +92,7 @@ a:hover {
     background-color: #800000;
     width: 450px; /* Adjust the width as needed */
     position: absolute;
-    top: 106px; /* Adjust the top position to push it below the navbar */
+    top: 185px; /* Adjust the top position to push it below the navbar */
     left: 0; /* Show the sidebar by default */
     height: 100%;
     overflow-x: hidden;
@@ -197,6 +197,7 @@ a:hover {
 }
 
 .dropdown-container .sidebar-link {
+    display: inline-block;
     position: relative;
     padding: 10px 70px;
     cursor: pointer;

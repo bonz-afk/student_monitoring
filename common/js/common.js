@@ -656,66 +656,100 @@ function signUpProcess(){
 
 function adminStudentProcess(process,id){
     const url = "http://localhost/student_monitoring/api/AdminStudent.php";
-    Swal.fire({
-        title: 'Do you want to delete this Student?',
-        showDenyButton: true,
-        confirmButtonText: 'Save',
-        denyButtonText: `Don't save`,
-    }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: 'Deleting Student!',
-                html: 'Processing',
-                timer: 1000,
-                allowOutsideClick: false,
-                timerProgressBar: true,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            }).then((result) => {
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    $.ajax({
-                        url: url,
-                        method: "POST",
-                        data: {
-                            process: process,
-                            id: id,
-                        },
-                        success: function (data) {
-                            const parsedData = JSON.parse(data); // Parse the response as JSON
-                            if (!parsedData.status) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: ''+parsedData.message,
-                                })
+    if(process == 'delete'){
+        Swal.fire({
+            title: 'Do you want to delete this Student?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Deleting Student!',
+                    html: 'Processing',
+                    timer: 1000,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                process: process,
+                                id: id,
+                            },
+                            success: function (data) {
+                                const parsedData = JSON.parse(data); // Parse the response as JSON
+                                if (!parsedData.status) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: ''+parsedData.message,
+                                    })
 
-                            } else {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: ''+parsedData.message,
-                                    confirmButtonText: 'Close',
-                                    allowOutsideClick: false,
-                                }).then((result) => {
-                                    /* Read more about isConfirmed, isDenied below */
-                                    if (result.isConfirmed) {
-                                        location.reload();
-                                    }
-                                })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: ''+parsedData.message,
+                                        confirmButtonText: 'Close',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error:", textStatus, errorThrown);
                             }
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
 
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            console.error("AJAX Error:", textStatus, errorThrown);
-                        }
-                    });
-                }
-            })
-        } else if (result.isDenied) {
-            Swal.fire('Changes are not saved', '', 'info')
-        }
-    })
+    if(process == 'view') {
+        var resultDiv = $("#list-student");
+        resultDiv.empty();
 
+        $.ajax({
+           url: url,
+           method: "GET",
+            data: {process: process,id: id},
+           success: function (data){
+               // Handle the response data and display it in the div
+
+               if (Array.isArray(data) && data.length > 0) {
+                       var studentLastName = data[0].fullname;
+                       $("#student_name").text(studentLastName);
+
+                   $.each(data, function (index, item) {
+                       var courseDiv = $("<div>");
+                       courseDiv.addClass("list-student-item");
+                       courseDiv.html(
+                           '<p>' + item.c_code + '</p>' +
+                           '<p class="course-description">' + item.COURSE_DESC + '</p>'
+                       );
+                       resultDiv.append(courseDiv);
+                   });
+               } else {
+                   const fullval = $("#fullval").data('fullname');
+                   $("#student_name").text(fullval);
+                   resultDiv.html("No data available.");
+               }
+           }
+        });
+    }
 }
 function logout(){
     Swal.fire({

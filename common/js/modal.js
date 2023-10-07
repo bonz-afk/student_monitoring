@@ -4,18 +4,22 @@ const modals = document.querySelectorAll('.modal');
 // Function to open a modal based on its ID
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
-    modal.style.display = 'block';
+    if (modal) {
+        modal.style.display = 'block';
+    }
 }
 
 // Function to close a specific modal
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    modal.style.display = 'none';
-    // Clear input fields within the modal
-    const inputFields = modal.querySelectorAll('input[type="text"]');
-    inputFields.forEach((input) => {
-        input.value = '';
-    });
+    if (modal) {
+        modal.style.display = 'none';
+        // Clear input fields within the modal
+        const inputFields = modal.querySelectorAll('input[type="text"]');
+        inputFields.forEach((input) => {
+            input.value = '';
+        });
+    }
 }
 
 // Add click event listeners to all 'openModalBtn' buttons
@@ -41,8 +45,10 @@ window.addEventListener('click', (event) => {
 // Add click event listeners to the close buttons within modals
 modals.forEach((modal) => {
     const closeBtn = modal.querySelector('.closeModalBtn');
-    closeBtn.addEventListener('click', () => {
-        const modalId = modal.id;
-        closeModal(modalId);
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            const modalId = modal.id;
+            closeModal(modalId);
+        });
+    }
 });
