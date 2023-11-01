@@ -1,6 +1,6 @@
 <?php
 
-$query = 'SELECT * FROM tb_course WHERE STATUS = "ON"';
+$query = 'SELECT * FROM tb_course WHERE STATUS = "ON" AND COLLEGE_ID = 2';
 $result = mysqli_query($mysqli, $query);
 
 if (!$result) {

@@ -19,7 +19,6 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" href="../../common/css/nav.css">
     <style>
         .college-container {
-            margin-left: 400px;
             transition: margin-left 0.3s;
         }
         .college-container-title{
@@ -87,6 +86,40 @@ ini_set('display_errors', 1);
             align-items: center;
             flex-direction: column;
         }
+
+        @media only screen and (max-width: 1148px) {
+            .college-container{
+                display: block;
+                margin-left: 0;
+            }
+
+            .college-container.hide{
+                display: none;
+            }
+
+            .college-item-content p {
+                width: 100%;
+                max-width: 110px;
+            }
+
+            .college-item:hover p {
+                width: unset;
+            }
+
+            .college.font-mont {
+                font-size: 30px;
+            }
+
+        }
+        @media only screen and (max-width: 668px) {
+            .list-college-container {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
     </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
@@ -106,9 +139,9 @@ ini_set('display_errors', 1);
                         <img src="../../common/images/education.png" alt="College of Business Administration" style="width: 10rem;height: 10rem;margin-top: -10px;">
                     </div>
                 </a>
-                <a href="#" class="college-item">
+                <a href="http://localhost/student_monitoring/pages/admin/computer_studies.php" class="college-item">
                     <div class="college-item-content">
-                        <p>College of Business Administration</p>
+                        <p>College of Computer Studies</p>
                         <img src="../../common/images/css-logo.png" alt="College of Computer Studies" style="width: 10rem;height: 10rem;margin-top: -10px;">
                     </div>
                 </a>
@@ -119,7 +152,6 @@ ini_set('display_errors', 1);
                     </div>
                 </a>
             </div>
-        </div>
         </div>
     </div>
 

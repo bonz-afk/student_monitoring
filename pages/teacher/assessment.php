@@ -1,45 +1,47 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth_teacher.php';
 
-$current_page = 'college-classes';
+$current_page = 'assessment';
+$current_dropdown = null;
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar with Logo</title>
+    <title>Student Monitoring</title>
     <link rel="stylesheet" href="../../common/css/common.css">
     <link rel="stylesheet" href="../../common/css/nav.css">
 
     <style>
-        .class-container {
+        .assessment-container {
             transition: margin-left 0.3s;
         }
-        .class-container-title{
+        .assessment-container-title{
             display: flex;
             justify-content: center;
         }
-        .class-title{
+        .assessment-title{
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .college.font-mont {
+        .assessment.font-mont {
             font-size: 50px;
         }
-        .list-class-container{
+        .list-assessment-container{
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 50px;
         }
-        .class-main{
+        .assessment-main{
             margin: 100px auto;
         }
 
-        .class-item{
+        .assessment-item{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -54,29 +56,29 @@ $current_page = 'college-classes';
             cursor: pointer;
         }
 
-        .class-item:hover{
+        .assessment-item:hover{
             text-decoration: none;
             font-size: 30px;
         }
 
 
-        .class-item:hover img{
+        .assessment-item:hover img{
             width: 15rem !important;
             height: 15rem !important;
         }
 
-        .class-item:hover p{
+        .assessment-item:hover p{
             width: 200px;
         }
 
-        .class-item-content p{
+        .assessment-item-content p{
             width: 130px;
             text-align: center;
             margin: 10px 0 0;
             letter-spacing: 1px;
         }
 
-        .class-item-content{
+        .assessment-item-content{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -87,30 +89,30 @@ $current_page = 'college-classes';
 <body>
 
 <?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>
-<div class="class-container">
-    <div class="class-main">
-        <div class="class-container-title">
-            <div class="class-title">
-                <p class="college font-mont">List of Colleges</p>
+<div class="assessment-container">
+    <div class="assessment-main">
+        <div class="assessment-container-title">
+            <div class="assessment-title">
+                <p class="assessment font-mont">List of Assessment</p>
             </div>
         </div>
-        <div class="list-class-container">
-            <a href="#" class="class-item">
-                <div class="class-item-content">
-                    <p>College of Business Administration</p>
-                    <img src="../../common/images/education.png" alt="College of Business Administration" style="width: 10rem;height: 10rem;margin-top: -10px;">
+        <div class="list-assessment-container">
+            <a href="#" class="assessment-item">
+                <div class="assessment-item-content">
+                    <p>Attendance</p>
+                    <img src="../../common/images/education.png" alt="College of Business Administration" style="width: 10rem;height: 10rem;margin-top: 10px;">
                 </div>
             </a>
-            <a href="http://localhost/student_monitoring/pages/student/class_science.php" class="class-item">
-                <div class="class-item-content">
-                    <p>College of Computer Studies</p>
+            <a href="http://localhost/student_monitoring/pages/teacher/class_science.php" class="assessment-item">
+                <div class="assessment-item-content">
+                    <p>Exam & Quizzes</p>
                     <img src="../../common/images/css-logo.png" alt="College of Computer Studies" style="width: 10rem;height: 10rem;margin-top: -10px;">
                 </div>
             </a>
-            <a href="#" class="class-item">
-                <div class="class-item-content">
-                    <p>College of Engineering</p>
-                    <img src="../../common/images/engineering.png" alt="College of Engineering" style="width: 10rem;height: 10rem;margin-top: 10px;">
+            <a href="#" class="assessment-item">
+                <div class="assessment-item-content">
+                    <p>Activities & Others</p>
+                    <img src="../../common/images/engineering.png" alt="College of Engineering" style="width: 10rem;height: 10rem;margin-top: -10px;">
                 </div>
             </a>
         </div>

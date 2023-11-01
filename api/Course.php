@@ -3,6 +3,9 @@ include_once $_SERVER['DOCUMENT_ROOT']. '../student_monitoring/lib/client.php';
 
 $courseProcess = trim($_POST['process']);
 $email = $_SESSION['email'];
+$user = $_SESSION['user_id'];
+
+
 
 if(isset($_POST['course_id'])){
     $courseID = trim($_POST['course_id']);
@@ -27,8 +30,12 @@ if($courseProcess == 'add'){
         exit;
     }
 
+    if(isset($_POST['course_id'])){
+        $collegeID = trim($_POST['college_id']);
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = "INSERT INTO tb_course (COURSE_CODE, COURSE_DESC, STATUS, CREATED_AT, CREATED_BY) VALUES (?, ?, 'ON', NOW(), ?)";
+        $sql = "INSERT INTO tb_course (COURSE_CODE, COURSE_DESC, STATUS,COLLEGE_ID, CREATED_AT, CREATED_BY) VALUES (?, ?, 'ON', ?, NOW(), ?)";
 
 // Create a prepared statement
         $stmtAdd = $mysqli->prepare($sql);
@@ -39,7 +46,7 @@ if($courseProcess == 'add'){
         }
 
 // Bind parameters to the statement
-        $stmtAdd->bind_param("sss", $courseCode, $courseDesc,$email);
+        $stmtAdd->bind_param("ssis", $courseCode, $courseDesc, $collegeID, $user);
 
 // Execute the statement to insert data
         if ($stmtAdd->execute()) {
@@ -73,7 +80,8 @@ elseif ($courseProcess == 'edit'){
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = "UPDATE tb_course SET COURSE_CODE = ?, COURSE_DESC = ? WHERE ID = ?";
+
+        $sql = "UPDATE tb_course SET COURSE_CODE = ?, COURSE_DESC = ?, MODIFIED_AT = NOW(), MODIFIED_BY = $user WHERE ID = ?";
 
         // Create a prepared statement
         $stmtEdit = $mysqli->prepare($sql);
@@ -107,6 +115,8 @@ elseif ($courseProcess == 'edit'){
 }
 elseif($courseProcess == 'delete'){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $courseStatus = 'OFF';
+
         $sql = "UPDATE tb_course SET STATUS = ? WHERE ID = ?";
 
         // Create a prepared statement

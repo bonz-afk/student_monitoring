@@ -1,7 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT']. '../student_monitoring/lib/client.php';
 
-$courseID = $_POST['courseID']; // Assuming you send courseID via POST
+$courseID = $_POST['courseID'];
 
 $query = "SELECT * FROM tb_course WHERE ID = $courseID";
 $result = mysqli_query($mysqli, $query);

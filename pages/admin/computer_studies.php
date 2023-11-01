@@ -20,7 +20,6 @@ ini_set('display_errors', 1);
     <link rel="stylesheet" href="../../common/css/modal.css">
     <style>
         .main-account {
-            margin-left: 400px; /* Adjust the margin to match the sidebar width */
             transition: margin-left 0.3s; /* Add smooth transition for opening/closing sidebar */
         }
         .account-container-title{
@@ -33,15 +32,16 @@ ini_set('display_errors', 1);
             align-items: center;
         }
         .account-title p {
-            font-size: 65px;
+            font-size: 45px;
             font-weight: 900;
             font-family: 'Montserrat', sans-serif;
         }
 
         .account-button-content{
             display: flex;
-            justify-content: space-around;
-            gap: 695px;
+            justify-content: space-between;
+            max-width: 1522px;
+            margin: 0 auto;
         }
 
         .account-button-content > div:first-child {
@@ -51,21 +51,13 @@ ini_set('display_errors', 1);
         .account-button-content > div:last-child {
             align-self: center;
         }
-        .btn-maroon{
-            border-radius: 5px;
-            border: 0;
-            padding: 20px;
-            background-color: #800000;
-            color: white;
-            cursor: pointer;
-        }
+
 
         .table-container {
             width: 100%;
             margin: 0 auto;
             height: 400px;
-            overflow-y: auto;
-            overflow-x: hidden;
+            overflow: auto;
             background-color: #FFFFFF;
             max-width: 1522px;
         }
@@ -106,6 +98,17 @@ ini_set('display_errors', 1);
             }
             .table-container{
                 height: 100%;
+            }
+        }
+
+        @media  only screen and (max-width: 1148px) {
+        .main-account{
+            display: block;
+            margin-left: 0 !important;
+        }
+
+           .main-account.hide{
+               display: none;
             }
         }
 
@@ -169,7 +172,7 @@ ini_set('display_errors', 1);
 
         @media only screen and (max-width: 1200px) {
             .account-title p {
-                font-size: 40px;
+                font-size: 30px;
             }
             .account-title img {
                 width: 100px;
@@ -245,6 +248,9 @@ ini_set('display_errors', 1);
             margin-left: 95px;
         }
 
+        .account-button-content div{
+            cursor: pointer;
+        }
     </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
@@ -260,7 +266,7 @@ ini_set('display_errors', 1);
     </div>
     <div class="account-button-content">
         <div>
-            <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="80" height="80" />
+            <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="80" height="80" onclick="sort('course')" />
         </div>
         <div>
             <button class="btn-maroon openModalBtn" data-modal="addCourseModal">Add Course</button>
@@ -281,7 +287,7 @@ ini_set('display_errors', 1);
 
                 <td><?php echo $course['COURSE_CODE'] ?></td>
                 <td><?php echo $course['COURSE_DESC'] ?></td>
-                <td><i  class="fa-solid fa-pen-to-square fa-xl openModalBtn" style="color: #800000;cursor: pointer" data-modal="myModal" onclick="showCourse(<?php echo $course['ID']; ?>)"></i>
+                <td><i  class="fa-solid fa-pen-to-square fa-xl openModalBtn" style="color: #800000;cursor: pointer" data-modal="myModal" onclick="showCourse(<?php echo $course['ID']; ?>,2)"></i>
                     <i class="fa-solid fa-trash fa-xl"  style="color: #800000;cursor: pointer" onclick="courseProcess('delete',<?php echo $course['ID']; ?>)"></i></td>
                 <?php } ?>
             </tr>
@@ -297,6 +303,7 @@ ini_set('display_errors', 1);
         <div class="modal-body">
             <form id="addCourse">
                 <div class="add-course">
+                    <input type="text" id="college_id" name="college_id" value="2" hidden>
                     <input type="text" class="" id="add_course_code" name="add_course_code" maxlength="255" placeholder="Course Code">
                     <small class="code-message"></small>
                     <input type="text" class="" id="add_course_desc" name="add_course_desc"  maxlength="255" placeholder="Course Description">

@@ -66,6 +66,7 @@ include_once  $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
                 color: #800000;
                 text-indent: 10px;
                 font-size: 20px;
+                max-width: 725px;
             }
             .sign-input:focus,.sign-select:focus{
                 outline: 0;
@@ -100,6 +101,55 @@ include_once  $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
                 color: #ff0033;
                 align-self: start;
                 margin-left: 7px;
+            }
+
+            @media only screen and  (max-width: 2300px) {
+                .img-bg{
+                    width: 50rem;
+                    height: 50rem;
+                }
+
+                .signup-container{
+                    justify-content: space-evenly;
+                    margin-left: 0;
+                }
+                .font-mont.sign{
+                    font-size: 45px;
+                }
+            }
+
+            @media only screen and  (max-width: 1024px) {
+                .img-bg{
+                    display: none;
+                }
+
+                .signup-bg{
+                    background-image: url("common/images/signup-img.png");
+                    background-repeat: no-repeat;
+                    background-position: center top;
+                    background-size: 100% 24%;
+                    overflow-y: scroll;
+                }
+
+                .font-mont.sign{
+                    font-size: 45px;
+                }
+
+                .sign-select {
+                    width: 100%;
+                    max-width: 345px;
+                }
+                .signup-container {
+                    justify-content: center;
+                    margin-top: 173px;
+                }
+
+            }
+
+            @media only screen and  (max-width: 466px) {
+                .font-mont.sign{
+                    font-size: 20px;
+                }
             }
         </style>
     </head>

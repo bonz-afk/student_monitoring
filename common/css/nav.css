@@ -12,7 +12,7 @@ nav {
     color: #fff;
     padding: 10px 0;
     display: flex;
-    justify-content: start;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -82,17 +82,18 @@ a:hover {
 }
 
 .nav-profile {
-    position: relative;
-    padding: 0 200px;
-    align-self: center;
-    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: end;
+    margin: 0 100px;
+    gap: 25px;
 }
 /* Style the side navigation bar */
 .sidenav {
     background-color: #800000;
     width: 450px; /* Adjust the width as needed */
     position: absolute;
-    top: 185px; /* Adjust the top position to push it below the navbar */
+    top: 180px; /* Adjust the top position to push it below the navbar */
     left: 0; /* Show the sidebar by default */
     height: 100%;
     overflow-x: hidden;
@@ -100,6 +101,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 1;
 }
 
 /* Style the side navigation links */
@@ -227,6 +229,7 @@ a:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin: 0 0 -40px -19px;
 }
 .dropdown-menu.show {
     display: flex;
@@ -245,4 +248,158 @@ a:hover {
     height: 1px;
     background-color: #fff; /* Divider color */
     margin: 8px 0; /* Adjust the margin to control the divider spacing */
+}
+
+.logo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-content{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
+.logo-content p{
+    color: #000000;
+    font-weight: 400;
+    font-size: 20px;
+    margin: 0;
+    font-family: Georgia, serif;
+}
+
+.logo-content p:first-child{
+    color: #000000;
+    font-size: 70px;
+}
+
+.logo-content p:nth-last-child(2){
+    color: #000000;
+    font-size: 9px;
+}
+
+.sidebar-link.logout{
+    display: none;
+}
+
+@media only screen and (max-width: 1148px) {
+    .search-container img{
+        display: none;
+    }
+    .nav-profile{
+        display: none;
+    }
+
+    .search-container input[type="text"]{
+        display: none;
+    }
+
+    .logo-content p:first-child {
+        color: #000000;
+        font-size: 20px;
+    }
+
+    .logo-content p:nth-last-child(2) {
+        color: #000000;
+        font-size: 5px;
+    }
+
+    .logo-container img{
+        width: 5rem !important;
+        height: 5rem !important;
+    }
+    .sidenav {
+        top: 100px;
+        width: 100% !important;
+        transition: unset;
+    }
+
+    .sidenav {
+        top: 100px;
+        width: 100% !important;
+        transition: unset;
+    }
+    .sidenav.hide {
+        left: -999999px;
+    }
+
+    .sidebar-link.logout{
+        display: block;
+    }
+}
+.notification {
+    position: relative;
+    display: inline-block;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    background: #800000;
+    min-width: 400px;
+    height: 70vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    top: 38px;
+    right: 0;
+    padding: 0 40px;
+    overflow-y: scroll;
+}
+
+.notification-dropdown ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.notification-dropdown li {
+    text-decoration: none;
+    padding: 20px 0;
+    border-bottom: 1px solid #D3D3D3; /* Add divider */
+    color: white; /* Text color */
+    width: 100%;
+    font-size: 20px;
+}
+
+.notification-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.student-with-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admit.btn-cancel{
+    padding: 10px;
+    font-size: 15px;
+}
+
+.notification-dropdown::-webkit-scrollbar {
+    width: 8px; /* Width of scrollbar in Chrome/Safari */
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+    background: #823411;
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+    background: #C2B280; /* Color of scrollbar track in Chrome/Safari */
 }

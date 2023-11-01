@@ -1,6 +1,6 @@
 .landing-bg {
     background: url('http://localhost/student_monitoring/common/images/background/landing-bg.png') center/cover no-repeat;
-    min-height: 100%;
+    min-height: 100vh;
     overflow-y: hidden;
 }
 .top-container{

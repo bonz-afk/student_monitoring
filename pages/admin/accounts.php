@@ -2,7 +2,6 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth_user.php';
-include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/course_list.php';
 $current_page = 'accounts';
 ?>
 
@@ -17,7 +16,6 @@ $current_page = 'accounts';
 
         <style>
             .main-account {
-                margin-left: 400px;
                 transition: margin-left 0.3s;
             }
             .main-content{
@@ -66,6 +64,29 @@ $current_page = 'accounts';
                 text-decoration: none;
                 font-size: 30px;
             }
+
+            @media  only screen and (max-width: 1148px) {
+                .main-account{
+                    display: block;
+                    margin-left: 0 !important;
+                }
+
+                .main-account.hide{
+                    display: none;
+                }
+                .account.font-mont {
+                    font-size: 30px;
+                }
+            }
+
+            @media only screen and (max-width: 668px) {
+                .account-container-item {
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
         </style>
     </head>
     <body>
@@ -82,7 +103,7 @@ $current_page = 'accounts';
                                <img src="../../common/images/student.png" alt="teacher" style="width: 10rem;height: 10rem">
                        </a>
 
-                       <a class="account-item">
+                       <a  href="http://localhost/student_monitoring/pages/admin/teacher_account.php" class="account-item">
                            Teacher
                            <img src="../../common/images/teacher.png" alt="teacher" style="width: 10rem;height: 10rem">
                        </a>

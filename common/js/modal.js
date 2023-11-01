@@ -16,8 +16,18 @@ function closeModal(modalId) {
         modal.style.display = 'none';
         // Clear input fields within the modal
         const inputFields = modal.querySelectorAll('input[type="text"]');
+        const selectFields = modal.querySelectorAll('select');
+        const checkboxFields = modal.querySelectorAll('input[type="checkbox"]');
+
         inputFields.forEach((input) => {
             input.value = '';
+        });
+        selectFields.forEach((select) => {
+            select.value = ''; // Set the value of the select to an empty string
+        });
+
+        checkboxFields.forEach((checkbox) => {
+            checkbox.checked = false; // Unchecks the checkbox
         });
     }
 }
@@ -42,13 +52,21 @@ window.addEventListener('click', (event) => {
     });
 });
 
-// Add click event listeners to the close buttons within modals
+const smallElements = document.querySelectorAll('.message');
 modals.forEach((modal) => {
     const closeBtn = modal.querySelector('.closeModalBtn');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             const modalId = modal.id;
             closeModal(modalId);
+
+            smallElements.forEach((small) => {
+                small.classList.remove('valid', 'error');
+                small.textContent = ''; // Remove the text content
+            });
         });
     }
+
 });
+
+

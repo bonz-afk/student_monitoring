@@ -9,7 +9,7 @@ $idGet = isset($_GET['id']) ? trim($_GET['id']) : null;
 
 if($process == 'delete'){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = "UPDATE tb_user SET STATUS = 'OFF', MODIFIED_AT = NOW(),MODIFIED_BY = $user  WHERE ID = ?";
+        $sql = "UPDATE tb_user SET STATUS = 'OFF', MODIFIED_AT = NOW(),MODIFIED_BY = '$user'  WHERE ID = ?";
 
         // Create a prepared statement
         $stmtDel = $mysqli->prepare($sql);
@@ -49,9 +49,9 @@ if($processGet == 'view'){
         $academic = trim($_GET['academic']);
 
         if(empty($academic)){
-            $queryString = "AND a.ACADEMIC_YEAR = (SELECT MAX(ACADEMIC_YEAR) FROM tb_class)";
+            $queryString = "AND e.ACADEMIC_YEAR = (SELECT MAX(ACADEMIC_YEAR) FROM tb_class)";
         }else{
-            $queryString = "AND a.ACADEMIC_YEAR = '$academic'";
+            $queryString = "AND e.ACADEMIC_YEAR = '$academic'";
         }
 
         $sql = "SELECT CONCAT(
@@ -61,11 +61,10 @@ if($processGet == 'view'){
                 ' ',
                 UPPER(LEFT(u.MIDDLENAME, 1)),'.'
             ) as fullname, 
-            c.COURSE_CODE as c_code, c.COURSE_DESC,a.CLASS_NAME FROM tb_class_enrolled as e
-            LEFT join tb_user as u on u.id = e.STUDENT
-            LEFT join tb_class as a on a.id = e.CLASS_ID
+           e.CLASS_NAME, c.COURSE_CODE as c_code, c.COURSE_DESC FROM tb_class as e
+            LEFT join tb_user as u on u.id = e.TEACHER
             LEFT join tb_course c on c.ID = e.id
-            WHERE u.ID = ? AND c.STATUS = 'ON' $queryString";
+            WHERE u.ID = ? AND e.STATUS = 'ON' $queryString";
 
 
         // Create a prepared statement

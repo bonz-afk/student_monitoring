@@ -20,3 +20,15 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 
+$yearList = "SELECT DISTINCT ACADEMIC_YEAR FROM tb_class";
+$resultYear = mysqli_query($mysqli, $yearList);
+
+if (!$resultYear) {
+    die('Database query failed: ' . mysqli_error($mysqli));
+}
+
+// Fetch and store the result data as an array
+$academicYear = array();
+while ($row = mysqli_fetch_assoc($resultYear)) {
+    $academicYear[] = $row;
+}
