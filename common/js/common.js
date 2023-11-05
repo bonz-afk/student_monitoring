@@ -1802,7 +1802,7 @@ function  createClass(process,id) {
                         var enrollStatusIcon = ''; // Declare the variable
 
                         if (item.enrollStatus == 'PENDING') {
-                            enrollStatusIcon = '<i class="fa-solid fa-person-circle-check fa-xl" style="color: #800000; cursor: pointer"></i>';
+                            enrollStatusIcon = '<i class="fa-solid fa-person-circle-check fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'admit\',' + item.enrolledid + ')"></i>';
                         }
 
                         var statusCell = (item.enrollStatus == "ON") ? "Joined" : "Pending";
@@ -1821,6 +1821,68 @@ function  createClass(process,id) {
                 }
             }
         });
+    }
+
+    if (process == 'admit'){
+        Swal.fire({
+            title: 'Do you want to Admit this student in the Class?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Joing Class!',
+                    html: 'Processing',
+                    timer: 1000,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                process: process,
+                                enrollid: id,
+                            },
+                            success: function (data) {
+                                const parsedData = JSON.parse(data); // Parse the response as JSON
+                                if (!parsedData.status) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '' + parsedData.message,
+                                    })
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '' + parsedData.message,
+                                        confirmButtonText: 'Close',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error:", textStatus, errorThrown);
+                            }
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
     }
 }
 
@@ -1973,7 +2035,7 @@ function classYearChange(process){
                            '<td>' + item.c_code + '</td>' +
                            '<td>' + item.SECTION + '</td>' +
                            '<td>' + (item.statusEnroll == "ON" ? "Joined" : "PENDING") + '</td>' +
-                           '<td><i class="fas fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="joinedClasses(\'leave\', ' + item.SECTION + ')"></i></td>'
+                           '<td><i class="fas fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="joinedClasses(\'leave\', ' + item.enrolledId + ')"></i></td>'
                        );
 
                        tableBody.append(row);
@@ -2026,6 +2088,53 @@ function classYearChange(process){
    }
 }
 
+function attendance(){
+
+    const url = "http://localhost/student_monitoring/api/Attendance.php";
+    let validated = 1;
+
+    if($("#student-classes-select").val() == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Please Select a Class',
+        })
+        validated = 0;
+    }
+
+
+    if(validated === 1){
+        $.ajax({
+            url: url,
+            method: "post",
+            data: {id: $("#student-classes-select").val()},
+            success:function (data){
+                const parsedData = JSON.parse(data); // Parse the response as JSON
+                if (!parsedData.status) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '' + parsedData.message,
+                    })
+
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '' + parsedData.message,
+                        confirmButtonText: 'Close',
+                        allowOutsideClick: false,
+                    }).then((result) => {
+                        /* Read more about isConfirmed, isDenied below */
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    })
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error:", textStatus, errorThrown);
+            }
+        });
+    }
+}
 
 function copy() {
     const textToCopy = $("#classcode").text(); // Specify the text you want to copy
@@ -2101,4 +2210,3 @@ function sort(id) {
         $('tbody').append(row);
     });
 }
-

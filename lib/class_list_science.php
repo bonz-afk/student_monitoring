@@ -22,5 +22,23 @@ if(isset($_SESSION['user_id']) || !empty(($_SESSION['user_id']) )){
         $classScienceData[] = $row;
     }
 
+    $queryClassStudent = "SELECT t.id as classId, t.CLASS_NAME FROM `tb_class_enrolled` as e
+                            left join tb_class as t
+                            on t.id = e.CLASS_ID
+                            where e.STUDENT = $id and t.STATUS = 'ON' AND e.STATUS = 'ON'";
+
+    $resultClass = mysqli_query($mysqli, $queryClassStudent);
+
+    if (!$resultClass) {
+        die('Database query failed: ' . mysqli_error($mysqli));
+    }
+
+// Fetch and store the result data as an array
+    $studentClassList = array();
+    while ($row = mysqli_fetch_assoc($resultClass)) {
+        $studentClassList[] = $row;
+    }
 }
+
+
 

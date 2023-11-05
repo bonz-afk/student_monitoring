@@ -212,14 +212,16 @@ $current_dropdown = 'student';
         <div class="admin-student-container">
             <div class="student-content">
                 <p class="font-mont">Student List</p>
-                <div class="student-sort">
-                    <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="80" height="80" onclick="sort('student-account')" />
-                </div>
                 <div class="table-container">
                     <table class="admin-student-table">
                         <thead>
                         <tr>
-                            <th>Name of Student</th>
+                            <th>
+                                <div class="sorting">
+                                    <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="50" height="50" onclick="sort('student-account')">
+                                    <span>Name of Student</span>
+                                </div>
+                            </th>
                             <th></th>
                         </tr>
                         </thead>

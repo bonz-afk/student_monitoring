@@ -243,7 +243,7 @@ $current_dropdown = 'teacher';
                 </div>
                 <div class="modal-body">
                  <span class="custom-select-class">
-                     <input type="text" id="teacher_id" readonly  >
+                     <input type="text" id="teacher_id" readonly hidden >
                      <select  class="teacher-account-select" id="teacher-account-select" name="teacher-account-select" onchange="academicYear('view','teacher')">
                          <option value="">Academic Year</option>
                          <?php foreach($academicYear as $year){ ?>

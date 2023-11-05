@@ -110,6 +110,7 @@ $current_dropdown = 'class_science';
             height: 400px;
             overflow-y: auto;
             overflow-x: hidden;
+            border-radius: 15px;
             background-color: #FFFFFF;
             max-width: 1522px;
         }

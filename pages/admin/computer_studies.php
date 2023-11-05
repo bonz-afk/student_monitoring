@@ -251,6 +251,32 @@ ini_set('display_errors', 1);
         .account-button-content div{
             cursor: pointer;
         }
+
+        .course.custom-select-class{
+            background-color: transparent;
+            border-bottom: 1px solid #800000;
+            border-radius: 0;
+            max-width: 195px;
+        }
+
+        .course-select:focus{
+            outline: 0;
+        }
+
+        .course-select {
+            appearance: none;
+            width: 100%;
+            height: 35px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 0;
+            background-color: transparent;
+            text-indent: 10px;
+            font-size: 20px;
+            color: #800000;
+            padding: 0 48px 0 0;
+            cursor: pointer;
+        }
     </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
@@ -265,18 +291,22 @@ ini_set('display_errors', 1);
         </div>
     </div>
     <div class="account-button-content">
-        <div>
-            <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="80" height="80" onclick="sort('course')" />
+        <div style="width: 100%">
         </div>
         <div>
-            <button class="btn-maroon openModalBtn" data-modal="addCourseModal">Add Course</button>
+            <button class="btn-maroon openModalBtn" data-modal="addCourseModal" style="margin-bottom: 10px">Add Course</button>
         </div>
     </div>
     <div class="table-container">
         <table class="course-table">
             <thead>
             <tr>
-                <th>Course Code</th>
+                <th>
+                    <div class="sorting">
+                        <img src="../../common/images/logo/dropdown-logo.svg" class="button-content-item" width="50" height="50" onclick="sort('course')">
+                        <span>Course Code</span>
+                    </div>
+                </th>
                 <th>Course Name</th>
                 <th>Action</th>
             </tr>

@@ -6,7 +6,7 @@ if(!empty($_SESSION['user_id'])) {
     $query = "SELECT COUNT(1) as notifAdmitted
 			 FROM tb_class_enrolled as e
             LEFT join tb_class as a on a.id = e.CLASS_ID
-            WHERE TEACHER = $id AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'";
+            WHERE a.TEACHER = $id AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'";
 
     $result = mysqli_query($mysqli, $query);
 
@@ -25,7 +25,7 @@ if(!empty($_SESSION['user_id'])) {
                 ' ',
                 UPPER(LEFT(u.MIDDLENAME, 1)),'.'
             ) as fullname, 
-            e.id as enrolledid, a.CLASS_NAME,a.CLASS_CODE,a.YEAR,a.PROGRAM,a.SECTION,a.SEMESTER,a.ACADEMIC_YEAR,e.STATUS as enrollStatus
+            e.id as enrolledid, a.id as classid,u.id as studentid, a.CLASS_NAME,a.CLASS_CODE,a.YEAR,a.PROGRAM,a.SECTION,a.SEMESTER,a.ACADEMIC_YEAR,e.STATUS as enrollStatus
 			 FROM tb_class_enrolled as e
             LEFT join tb_user as u on u.id = e.STUDENT
             LEFT join tb_class as a on a.id = e.CLASS_ID

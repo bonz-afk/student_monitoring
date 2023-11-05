@@ -16,107 +16,24 @@
         <div class="nav-profile">
             <div class="notification" style="color: #800000; cursor: pointer; font-size: 36px;">
                 <i class="fas fa-bell fa-xl" onclick="toggleNotif()"></i>
-                <span class="badge"><?php echo $notifTeacherCount; ?></span>
+                <span class="badge"><?php echo $notifTeacherCount ? $notifTeacherCount : 0; ?></span>
                 <div class="notification-dropdown" id="notificationDropdown">
                     <ul>
-                        <?php foreach ($notifContent as $list) {?>
-                            <li>
-                                <div style="margin-bottom: 10px">
-                                   <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                                </div>
-                                <div class="student-with-btn">
-                                    <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                    <button class="admit btn-cancel">Admit</button>
-                                </div>
+                        <?php if(!empty($notifContent)) { ?>
+                            <?php foreach ($notifContent as $list) {?>
+                                <li>
+                                    <div style="margin-bottom: 10px">
+                                       <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
+                                    </div>
+                                    <div class="student-with-btn">
+                                        <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
+                                        <button class="admit btn-cancel" onclick="createClass('admit',<?php echo $list['enrolledid'] ?>)">Admit</button>
+                                    </div>
 
-                            </li>
+                                </li>
+                            <?php }}else{?>
+                                <li style="text-align: center">No Notifications</li>
                         <?php }?>
-                        <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>
-                        <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>                <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>                <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>                <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>                <li>
-                            <div style="margin-bottom: 10px">
-                                <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
-                            </div>
-                            <div class="student-with-btn">
-                                <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                <button class="admit btn-cancel">Admit</button>
-                            </div>
-
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -176,8 +93,8 @@
                 <a class="sidebar-link  <?php echo $current_page === 'assessment' && $current_dropdown === null ? 'active-item' : ''; ?>" href="http://localhost/student_monitoring/pages/student/assessment.php" style="color: white">Assessment</a>
                 <?php if ($current_page === 'assessment') { ?>
                     <ul class="dropdown-container">
-                        <li><a href="assessment.php" class="sidebar-link <?php echo $current_dropdown === 'attendance' ? 'active-item' : ''; ?>">Attendance</a></li>
-                        <li><a href="class_science.php" class="sidebar-link <?php echo $current_dropdown === 'exam' ? 'active-item' : ''; ?>">Exam & Quizzes</a></li>
+                        <li><a href="http://localhost/student_monitoring/pages/student/attendance.php" class="sidebar-link <?php echo $current_dropdown === 'attendance' ? 'active-item' : ''; ?>">Attendance</a></li>
+                        <li><a href="http://localhost/student_monitoring/pages/student/exam-quiz.php" class="sidebar-link <?php echo $current_dropdown === 'exam' ? 'active-item' : ''; ?>">Exam & Quizzes</a></li>
                         <li><a href="#" class="sidebar-link <?php echo $current_dropdown === 'activities' ? 'active-item' : ''; ?>">Activities & Others</a></li>
                     </ul>
                 <?php }}?>

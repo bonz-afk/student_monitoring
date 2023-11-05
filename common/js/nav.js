@@ -8,6 +8,9 @@ function toggleSidenav() {
     const adminStudentContainer = document.querySelector('.admin-student-container');
     const adminTeacherContainer = document.querySelector('.admin-teacher-container');
     const buttonContent = document.querySelector('.account-button-content');
+    const assessmentStudent = document.querySelector('.assessment-container');
+    const studentAttendance = document.querySelector('.attendance-container');
+    const studentExam = document.querySelector('.exam-container');
     // Toggle the 'hide' class on the sidebar
     sidenav.classList.toggle('hide');
 
@@ -71,6 +74,30 @@ function toggleSidenav() {
         } else {
             teacherContainer.style.marginLeft = '330px'; // Adjust to match the sidebar width
             classButtonContent.style.gap = '725px';
+        }
+    }
+
+    if(assessmentStudent){
+        if (sidenav.classList.contains('hide')) {
+            assessmentStudent.style.marginLeft = '0';
+        } else {
+            assessmentStudent.style.marginLeft = '330px'; // Adjust to match the sidebar width
+        }
+    }
+
+    if(studentAttendance){
+        if (sidenav.classList.contains('hide')) {
+            studentAttendance.style.marginLeft = '0';
+        } else {
+            studentAttendance.style.marginLeft = '330px'; // Adjust to match the sidebar width
+        }
+    }
+
+    if(studentExam){
+        if (sidenav.classList.contains('hide')) {
+            studentExam.style.marginLeft = '0';
+        } else {
+            studentExam.style.marginLeft = '330px'; // Adjust to match the sidebar width
         }
     }
 }

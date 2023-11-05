@@ -103,7 +103,7 @@ if($classProcess == 'join'){
                         exit;
                     }
 
-                    $stmtInsert->bind_param("sii", $classId, $studentId, $classStatus);
+                    $stmtInsert->bind_param("iis", $classId, $studentId, $classStatus);
 
                     if ($stmtInsert->execute()) {
                         $message = 'Success waiting for Professor / Teacher to accept your request'; // Update message text
@@ -124,7 +124,7 @@ if($classProcess == 'join'){
     }
 }
 
-if($classProcess == 'change'){
+if($classProcess == 'join_change'){
     if (!empty($_SESSION['user_id'])) {
         $id = $_SESSION['user_id'];
         $academic = $_POST['academic'];

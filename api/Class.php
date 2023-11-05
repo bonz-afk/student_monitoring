@@ -388,5 +388,35 @@ if($classProcess == 'class_change'){
     }
 }
 
+if($classProcess == 'admit'){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id = trim($_POST['enrollid']);
+        $accept = 'ON';
+
+        $sqlUpdate = "UPDATE tb_class_enrolled SET STATUS = ?, ADMITTED_BY = ?, ADMITTED_DATE = NOW() WHERE id = ?";
+
+        $stmtUpdate = $mysqli->prepare($sqlUpdate);
+
+        if ($stmtUpdate === false) {
+            echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error]);
+            exit;
+        }
+
+        $stmtUpdate->bind_param("sii", $accept, $user,$id);
+
+        if ($stmtUpdate->execute()) {
+            $message = 'Successfully Admitted'; // Update message text
+            $status = true;
+        }
+        else {
+            $message = 'Error Admitted in class'; // Update message text
+            $status = false;
+        }
+
+        echo json_encode(['status' => $status, 'message' => $message]);
+    }
+}
+
 $mysqli->close();
 
