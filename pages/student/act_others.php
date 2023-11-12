@@ -2,7 +2,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/auth.php';
 $current_page = 'assessment';
-$current_dropdown = 'exam'
+$current_dropdown = 'activities'
 ?>
 
 <!DOCTYPE html>
@@ -15,11 +15,11 @@ $current_dropdown = 'exam'
     <link rel="stylesheet" href="../../common/css/nav.css">
     <link rel="stylesheet" href="../../common/css/modal.css">
     <style>
-        .exam-container{
+        .act-container{
             transition: margin-left 0.3s;
         }
 
-        .exam-content{
+        .act-content{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,7 +33,7 @@ $current_dropdown = 'exam'
             max-width: 1522px;
         }
 
-        .exam-item-container{
+        .act-item-container{
             display: flex;
             justify-content: center;
             align-items: center;
@@ -42,13 +42,13 @@ $current_dropdown = 'exam'
             width: 800px;
         }
 
-        .exam-title{
+        .act-title{
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .exam-title p{
+        .act-title p{
             font-size: 45px;
             font-weight: 900;
             font-family: 'Montserrat', sans-serif;
@@ -65,11 +65,11 @@ $current_dropdown = 'exam'
             max-width: 370px;
         }
 
-        .exam-select:focus{
+        .act-select:focus{
             outline: 0;
         }
 
-        .exam-select {
+        .act-select {
             appearance: none;
             width: 100%;
             height: 35px;
@@ -84,14 +84,14 @@ $current_dropdown = 'exam'
             cursor: pointer;
         }
 
-        .exam-form{
+        .act-form{
             display: flex;
             margin: 0 auto;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
-        .exam-input{
+        .act-input{
             width: 100%;
             height: 35px;
             max-width: 350px;
@@ -105,26 +105,26 @@ $current_dropdown = 'exam'
             color: #800000;
         }
 
-        .exam-input::placeholder{
+        .act-input::placeholder{
             color: #800000;
         }
 
-        .exam-input:focus,.college-select:focus{
+        .act-input:focus,.college-select:focus{
             outline: 0;
         }
         .exam.btn-save{
             padding: 15px 70px;
         }
 
-        .exam-item-container:first-child{
+        .act-item-container:first-child{
             margin-top: 40px;
         }
 
         @media only screen and (max-width: 1518px) {
-            .exam-content{
+            .act-content{
                 max-width: 700px;
             }
-            .exam-item-container{
+            .act-item-container{
                 gap: 0 !important;
                 flex-wrap: wrap;
                 margin: 0 auto;
@@ -138,16 +138,16 @@ $current_dropdown = 'exam'
 
 
         @media only screen and (max-width: 802px) {
-            .exam-content{
+            .act-content{
                 max-width: 600px !important;
             }
         }
 
         @media only screen and (max-width: 616px) {
-            .exam-content{
+            .act-content{
                 max-width: 350px !important;
             }
-            .exam-input,.content-with-valid{
+            .act-input,.content-with-valid{
                 max-width: 200px !important;
             }
 
@@ -176,71 +176,69 @@ $current_dropdown = 'exam'
     </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
-    <body>
-    <?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>
-    <div class="exam-container">
-        <div class="exam-title">
-            <p>Exam & Quizzes</p>
-        </div>
+<body>
+<?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>
+<div class="act-container">
+    <div class="act-title">
+        <p>Activities & Others</p>
+    </div>
 
-        <div class="exam-content">
-            <div class="exam-item-container">
-                <div class="input-container">
+    <div class="act-content">
+        <div class="act-item-container">
+            <div class="input-container">
                      <span class="exam custom-select-class">
-                            <select  class="exam-select" id="exam-class" name="exam-class">
+                            <select  class="act-select" id="act-class" name="act-class">
                                 <option value="">Class</option>
                                 <?php foreach($studentClassList as $classList){ ?>
                                     <option value="<?php echo $classList['classId'] ?>"><?php echo $classList['CLASS_NAME'].' '.substr($classList['TYPE'], 0,3) ?></option>
                                 <?php } ?>
                             </select>
                      </span>
-                    <small class="message message-exam-class"></small>
-                </div>
+                <small class="message message-act-class"></small>
             </div>
-            <div class="exam-item-container">
-                <div class="input-container">
+        </div>
+        <div class="act-item-container">
+            <div class="input-container">
                       <span class="exam custom-select-class">
-                            <select  class="exam-select" id="exam-type" name="exam-type">
+                            <select  class="act-select" id="act-type" name="act-type">
                                 <option value="">Type</option>
-                                <option value="PE">Prelim Exam</option>
-                                <option value="ME">Midterm Exam</option>
-                                <option value="SE">Semifinals Exam</option>
-                                <option value="FE">Finals Exam</option>
-                                <option value="QUIZ">Quiz</option>
+                                <option value="ACTIVITY">Activity</option>
+                                <option value="EXPERIMENT">Experiment</option>
+                                <option value="OTHERS">Others</option>
                             </select>
                         </span>
-                    <small class="message message-exam-type"></small>
-                </div>
-                <div class="input-container">
+                <small class="message message-act-type"></small>
+            </div>
+            <div class="input-container">
                   <span class="exam custom-select-class">
-                    <select  class="exam-select" id="exam-sem" name="exam-seme">
+                    <select  class="act-select" id="act-sem" name="act-seme">
                         <option value="">Term</option>
                         <option value="1">Prelims to Mid Terms</option>
                         <option value="2">Semifinals to Finals</option>
                        </select>
                     </span>
-                    <small class="message message-exam-sem"></small>
-                </div>
-            </div>
-            <div class="exam-item-container">
-                <div class="input-container">
-                    <input type="text" class="exam-input" id="score" name="score" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Score">
-                    <small class="message message-exam-score"></small>
-                </div>
-                <div class="input-container">
-                    <input type="text" class="exam-input" id="exam-date" name="exam-date"  placeholder="Date of Examination">
-                    <small class="message message-exam-date"></small>
-                </div>
-            </div>
-            <div class="exam-item-container">
-                <button class="exam btn-save" style="margin: 20px" onclick="score('quiz-exam');">Add Score</button>
+                <small class="message message-act-sem"></small>
             </div>
         </div>
+        <div class="act-item-container">
+            <div class="input-container">
+                <input type="text" class="act-input" id="score" name="score" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="Score">
+                <small class="message message-act-score"></small>
+            </div>
+            <div class="input-container">
+                <input type="text" class="act-input" id="act-date" name="act-date"  placeholder="Date of Activity">
+                <small class="message message-act-date"></small>
+            </div>
+        </div>
+        <div class="act-item-container">
+            <button class="exam btn-save" style="margin: 20px" onclick="score('activity-others');">Add Score</button>
+        </div>
     </div>
-    <script src="../../common/js/external/jquery-3.7.1.min.js"></script>
-    <script src="../../common/js/common.js"></script>
-    <script src="../../common/js/nav.js"></script>
-    <script src="../../common/js/modal.js"></script>
-    <script src="../../common/js/external/sweetalert2.min.js"></script>
-    </body>
+</div>
+<script src="../../common/js/external/jquery-3.7.1.min.js"></script>
+<script src="../../common/js/common.js"></script>
+<script src="../../common/js/nav.js"></script>
+<script src="../../common/js/modal.js"></script>
+<script src="../../common/js/external/sweetalert2.min.js"></script>
+</body>
 </html>

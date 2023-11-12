@@ -22,6 +22,40 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
+var dateInput = document.getElementById('exam-date');
+var actInput = document.getElementById('act-date');
+
+if(dateInput){
+    dateInput.addEventListener('focus', function() {
+        if (this.value === '') {
+            this.type = "date"; // Change to 'date' type when focused
+        }
+    });
+
+    dateInput.addEventListener('blur', function() {
+        if (this.value === '') {
+            this.type = "text";
+            this.placeholder = "Date of Examination";
+        }
+    });
+}
+
+if(actInput){
+    actInput.addEventListener('focus', function() {
+        if (this.value === '') {
+            this.type = "date"; // Change to 'date' type when focused
+        }
+    });
+
+    actInput.addEventListener('blur', function() {
+        if (this.value === '') {
+            this.type = "text";
+            this.placeholder = "Date of Activity";
+        }
+    });
+}
+
+
 
 const form = document.getElementById("loginForm");
 const form2 = document.getElementById("signupForm");
@@ -1794,7 +1828,7 @@ function  createClass(process,id) {
                 $("#secyear").text(yearLevelText + prog + ' ' + year  + sec);
                 $("#sem").text(semText);
                 $("#ayear").text(ayear);
-                $("#classcode").text(data[0].CLASS_CODE ? data[0].CLASS_CODE : 'No Data');
+                $("#classcode").text(data[0].CLASS_CODE ? data[0].CLASS_CODE : data[0].first_code);
 
                 if (Array.isArray(data) && data.length > 0) {
                     $.each(data, function (index, item) {
@@ -1805,12 +1839,12 @@ function  createClass(process,id) {
                             enrollStatusIcon = '<i class="fa-solid fa-person-circle-check fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'admit\',' + item.enrolledid + ')"></i>';
                         }
 
-                        var statusCell = (item.enrollStatus == "ON") ? "Joined" : "Pending";
+                        var statusCell = (item.enrollStatus == "ON") ? "Joined" : (item.enrollStatus == "PENDING") ? 'Pending' : 'No Data';
 
                         row.html(
-                            '<td>' + item.fullname + '</td>' +
+                            '<td>' + (item.fullname ? item.fullname : "No Data") + '</td>' +
                             '<td>' + statusCell + '</td>' +
-                            '<td>' + enrollStatusIcon + '&nbsp &nbsp' + '<i class="fa-solid fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'delete-enrolled\',' + item.enrolledid + ')"></i>' + '</td>'
+                            '<td>' + (item.enrolledid ? enrollStatusIcon + '&nbsp &nbsp' + '<i class="fa-solid fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'delete-enrolled\',' + item.enrolledid + ')"></i>' : "No Data") + '</td>'
                         );
 
                         tableBody.append(row);
@@ -2136,6 +2170,700 @@ function attendance(){
     }
 }
 
+function score(process) {
+    const url = "http://localhost/student_monitoring/api/Score.php";
+
+    if(process === 'quiz-exam'){
+        const examClass = document.querySelector('.message-exam-class');
+        const examTerm = document.querySelector('.message-exam-sem');
+        const examType = document.querySelector('.message-exam-type');
+        const examScore = document.querySelector('.message-exam-score');
+        const examDate = document.querySelector('.message-exam-date');
+        let validated = 1;
+        let classValid = 1;
+        let termValid = 1;
+        let typeValid = 1;
+        let score = 1;
+        let dateExam = 1;
+
+
+        Swal.fire({
+            title: 'Do you want to add this Score?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($("#exam-class").val() === "" || $("#exam-class").val() === undefined) {
+                    examClass.textContent = 'Class is Required';
+                    examClass.removeAttribute('hidden');
+                    examClass.classList.remove('valid');
+                    examClass.classList.add('error');
+
+                    classValid = 0;
+                    validated = 0;
+
+                }
+                else {
+                    examClass.classList.remove('error');
+                    examClass.classList.add('valid');
+                    examClass.textContent = 'Valid Class';
+                    classValid = 1;
+                }
+
+                if ($("#exam-sem").val() === "" || $("#exam-sem").val() === undefined) {
+                    examTerm.textContent = 'Term is Required';
+                    examTerm.removeAttribute('hidden');
+                    examTerm.classList.remove('valid');
+                    examTerm.classList.add('error');
+
+                    termValid = 0;
+                    validated = 0;
+                }
+                else {
+                    examTerm.classList.remove('error');
+                    examTerm.classList.add('valid');
+                    examTerm.textContent = 'Valid Class';
+                    termValid = 1;
+                }
+
+                if ($("#exam-type").val() === "" || $("#exam-type").val() === undefined) {
+                    examType.textContent = 'Exam Type is Required';
+                    examType.removeAttribute('hidden');
+                    examType.classList.remove('valid');
+                    examType.classList.add('error');
+
+                    typeValid = 0;
+                    validated = 0;
+
+                }
+                else {
+                    examType.classList.remove('error');
+                    examType.classList.add('valid');
+                    examType.textContent = 'Valid Class';
+                    typeValid = 1;
+                }
+
+                if ($("#score").val() === "" || $("#score").val() === undefined) {
+                    examScore.textContent = 'Score is Required';
+                    examScore.removeAttribute('hidden');
+                    examScore.classList.remove('valid');
+                    examScore.classList.add('error');
+
+                    score = 0;
+                    validated = 0;
+
+                }
+                else {
+                    examScore.classList.remove('error');
+                    examScore.classList.add('valid');
+                    examScore.textContent = 'Valid Class';
+                    score = 1;
+                }
+
+                if ($("#exam-date").val() === "" || $("#exam-date").val() === undefined) {
+                    examDate.textContent = 'Date is Required';
+                    examDate.removeAttribute('hidden');
+                    examDate.classList.remove('valid');
+                    examDate.classList.add('error');
+
+                    dateExam = 0;
+                    validated = 0;
+
+                }
+                else {
+                    examDate.classList.remove('error');
+                    examDate.classList.add('valid');
+                    examDate.textContent = 'Valid Class';
+                    dateExam = 1;
+                }
+
+                if(validated === 1){
+                    $.ajax({
+                        url: url,
+                        method: "post",
+                        data: {
+                            process: process,
+                            classId: $("#exam-class").val(),
+                            score: $("#score").val(),
+                            type: $("#exam-type").val(),
+                            term: $("#exam-sem").val(),
+                            examDate: $("#exam-date").val(),
+                        },
+                        success:function (data){
+                            const parsedData = JSON.parse(data); // Parse the response as JSON
+                            if (!parsedData.status) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '' + parsedData.message,
+                                })
+
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '' + parsedData.message,
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    if(process === 'activity-others'){
+        const actClass = document.querySelector('.message-act-class');
+        const actTerm = document.querySelector('.message-act-sem');
+        const actType = document.querySelector('.message-act-type');
+        const actScore = document.querySelector('.message-act-score');
+        const actDate = document.querySelector('.message-act-date');
+        let validated = 1;
+        let classValid = 1;
+        let termValid = 1;
+        let typeValid = 1;
+        let score = 1;
+        let dateAct = 1;
+
+
+        Swal.fire({
+            title: 'Do you want to add this Score?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                if ($("#act-class").val() === "" || $("#act-class").val() === undefined) {
+                    actClass.textContent = 'Class is Required';
+                    actClass.removeAttribute('hidden');
+                    actClass.classList.remove('valid');
+                    actClass.classList.add('error');
+
+                    classValid = 0;
+                    validated = 0;
+
+                }
+                else {
+                    actClass.classList.remove('error');
+                    actClass.classList.add('valid');
+                    actClass.textContent = 'Valid Class';
+                    classValid = 1;
+                }
+
+                if ($("#act-sem").val() === "" || $("#act-sem").val() === undefined) {
+                    actTerm.textContent = 'Term is Required';
+                    actTerm.removeAttribute('hidden');
+                    actTerm.classList.remove('valid');
+                    actTerm.classList.add('error');
+
+                    termValid = 0;
+                    validated = 0;
+                }
+                else {
+                    actTerm.classList.remove('error');
+                    actTerm.classList.add('valid');
+                    actTerm.textContent = 'Valid Class';
+                    termValid = 1;
+                }
+
+                if ($("#act-type").val() === "" || $("#act-type").val() === undefined) {
+                    actType.textContent = 'Exam Type is Required';
+                    actType.removeAttribute('hidden');
+                    actType.classList.remove('valid');
+                    actType.classList.add('error');
+
+                    typeValid = 0;
+                    validated = 0;
+
+                }
+                else {
+                    actType.classList.remove('error');
+                    actType.classList.add('valid');
+                    actType.textContent = 'Valid Class';
+                    typeValid = 1;
+                }
+
+                if ($("#score").val() === "" || $("#score").val() === undefined) {
+                    actScore.textContent = 'Score is Required';
+                    actScore.removeAttribute('hidden');
+                    actScore.classList.remove('valid');
+                    actScore.classList.add('error');
+
+                    score = 0;
+                    validated = 0;
+
+                }
+                else {
+                    actScore.classList.remove('error');
+                    actScore.classList.add('valid');
+                    actScore.textContent = 'Valid Class';
+                    score = 1;
+                }
+
+                if ($("#act-date").val() === "" || $("#act-date").val() === undefined) {
+                    actDate.textContent = 'Date is Required';
+                    actDate.removeAttribute('hidden');
+                    actDate.classList.remove('valid');
+                    actDate.classList.add('error');
+
+                    dateAct = 0;
+                    validated = 0;
+
+                }
+                else {
+                    actDate.classList.remove('error');
+                    actDate.classList.add('valid');
+                    actDate.textContent = 'Valid Class';
+                    dateAct = 1;
+                }
+
+                if(validated === 1){
+                    $.ajax({
+                        url: url,
+                        method: "post",
+                        data: {
+                            process: process,
+                            classId: $("#act-class").val(),
+                            score: $("#score").val(),
+                            type: $("#act-type").val(),
+                            term: $("#act-sem").val(),
+                            examDate: $("#act-date").val(),
+                        },
+                        success:function (data){
+                            const parsedData = JSON.parse(data); // Parse the response as JSON
+                            if (!parsedData.status) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '' + parsedData.message,
+                                })
+
+                            } else {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '' + parsedData.message,
+                                    confirmButtonText: 'Close',
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.error("AJAX Error:", textStatus, errorThrown);
+                        }
+                    });
+                }
+            }
+        });
+    }
+}
+
+function enrolledStudentFilter(process) {
+    const url = "http://localhost/student_monitoring/api/Assessment.php";
+    var tableBody = $(".student-enrolled-table tbody");
+    let selectYear = $("#teacher-year--select").val();
+    let search = $("#search-input").val();
+
+    tableBody.empty();
+
+    if(process == 'search_filter'){
+        if(selectYear != '' || search != ''){
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: {process: process, academic: selectYear, search: search},
+                success: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        $.each(data, function (index, item) {
+                            var row = $("<tr>");
+                            row.html(
+                                '<td>' + item.fullname + '</td>' +
+                                '<td>' + item.CLASS_NAME + '</td>' +
+                                '<td>' + item.type_formatted + '</td>' +
+                                '<td><i class="fas fa-clipboard-user fa-xl openModalBtn" data-modal="studentAttendance" style="color: #800000; cursor: pointer" onclick="studentClassDetails(\'attendance\', ' + item.enrollClass + ', ' + item.uid + ')"></i> &nbsp; <i class="fa-solid fa-newspaper fa-xl openModalBtn" data-modal="studentScore"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'score\', ' + item.enrollClass + ', ' + item.uid + ')" ></i> &nbsp; <i class="fa-solid fa-computer fa-xl openModalBtn" data-modal="studentOthers"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'others\', ' + item.enrollClass + ', ' + item.uid + ')"></i></td>'
+                            );
+
+                            tableBody.append(row);
+                        });
+                    } else {
+                        tableBody.html("No data available.");
+                    }
+                }
+            });
+        }else{
+            $.ajax({
+                url: url,
+                method: "POST",
+                data: {process: process, academic: selectYear, search: search},
+                success: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        $.each(data, function (index, item) {
+                            var row = $("<tr>");
+                            row.html(
+                                '<td>' + item.fullname + '</td>' +
+                                '<td>' + item.CLASS_NAME + '</td>' +
+                                '<td>' + item.type_formatted + '</td>' +
+                                '<td><i class="fas fa-clipboard-user fa-xl openModalBtn" data-modal="studentAttendance" style="color: #800000; cursor: pointer" onclick="studentClassDetails(\'attendance\', ' + item.enrollClass + ', ' + item.uid + ')"></i> &nbsp; <i class="fa-solid fa-newspaper fa-xl openModalBtn" data-modal="studentScore"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'score\', ' + item.enrollClass + ', ' + item.uid + ')" ></i></i> &nbsp; <i class="fa-solid fa-computer fa-xl openModalBtn" data-modal="studentOthers"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'others\', ' + item.enrollClass + ', ' + item.uid + ')"></i></td>'
+                            );
+
+                            tableBody.append(row);
+                        });
+                    } else {
+                        tableBody.html("No data available.");
+                    }
+                }
+            });
+        }
+    }
+    setTimeout(function() {
+        initializeModalScript();
+    }, 100);
+}
+
+function studentClassDetails(process,classId,studentId){
+    const url = "http://localhost/student_monitoring/api/Assessment.php";
+
+    if(process == 'attendance'){
+        var tableBody = $(".class-student-attendance tbody");
+        tableBody.empty();
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: {process: process, classId: classId, studentId: studentId},
+            success: function (data){
+                var className = data[0].CLASS_NAME;
+                var studentName = data[0].fullname;
+                var studentLecLab = data[0].type_formatted;
+
+                $("#class_name").text(className);
+                $("#class_leclab").text(studentLecLab);
+                $("#student_name").text(studentName);
+                if (Array.isArray(data) && data.length > 0) {
+                    $.each(data, function (index, item) {
+                        var row = $("<tr>");
+
+                        var options =
+                            '<option value="P" ' + (item.STATUS === 'P' ? 'selected' : '') + '>Present</option>' +
+                            '<option value="A" ' + (item.STATUS === 'A' ? 'selected' : '') + '>Absent</option>';
+
+                        if(item.date_only){
+                            row.html(
+                                '<td>' + item.date_only + '</td>' +
+                                '<td><select class="attStatus" id="attStatus'+ item.attId +'" name="attStatus'+ item.attId +'">'+ options +'</select></td>' +
+                                '<td><button class="btn-save" onclick="updateStudentClassDetails(\'update-attendance\','+ item.attId +')">Save</button></td>'
+                            );
+                        }else{
+                            tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                        }
+
+                        tableBody.append(row);
+                    });
+                } else {
+                    tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                }
+            }
+        });
+    }
+
+    if(process == 'score'){
+        var tableBody = $(".class-student-score tbody");
+        tableBody.empty();
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: {process: process, classId: classId, studentId: studentId},
+            success: function (data){
+                var className = data[0].CLASS_NAME;
+                var studentName = data[0].fullname;
+                var studentLecLab = data[0].type_formatted;
+
+
+                $("#class_name_score").text(className);
+                $("#class_leclab_score").text(studentLecLab);
+                $("#student_name_score").text(studentName);
+
+                if (Array.isArray(data) && data.length > 0) {
+                    $.each(data, function (index, item) {
+                        var row = $("<tr>");
+
+                        // var options =
+                        //     '<option value="P" ' + (item.STATUS === 'P' ? 'selected' : '') + '>Present</option>' +
+                        //     '<option value="A" ' + (item.STATUS === 'A' ? 'selected' : '') + '>Absent</option>';
+                        if(item.date_only){
+                            var type = item.TYPE == "QUIZ" ? "Quiz" : item.TYPE;
+                            row.html(
+                                '<td>' + item.date_only + '</td>' +
+                                '<td>' + item.type_formatted + '</td>' +
+                                '<td>' + type + '</td>' +
+                                '<td><input type="text" class="score-class"  id="examScore'+ item.scoreId +'" name="examScore'+ item.scoreId +'" value="'+ item.SCORE +'" maxlength="5"></td>' +
+                                '<td><button class="btn-save" onclick="updateStudentClassDetails(\'update-score\','+ item.scoreId +')">Save</button></td>'
+                            );
+                        }else{
+                            tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                        }
+
+                        tableBody.append(row);
+                    });
+                } else {
+                    tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                }
+            }
+        });
+    }
+
+    if(process == 'others'){
+        var tableBody = $(".class-student-lab tbody");
+        tableBody.empty();
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: {process: process, classId: classId, studentId: studentId},
+            success: function (data){
+                var className = data[0].CLASS_NAME;
+                var studentName = data[0].fullname;
+                var studentLecLab = data[0].type_formatted;
+
+                $("#class_name_others").text(className);
+                $("#class_leclab_others").text(studentLecLab);
+                $("#student_name_others").text(studentName);
+
+                if (Array.isArray(data) && data.length > 0) {
+                    $.each(data, function (index, item) {
+                        var row = $("<tr>");
+                        // var options =
+                        //     '<option value="P" ' + (item.STATUS === 'P' ? 'selected' : '') + '>Present</option>' +
+                        //     '<option value="A" ' + (item.STATUS === 'A' ? 'selected' : '') + '>Absent</option>';
+                        if(item.date_only){
+                            row.html(
+                                '<td>' + item.date_only + '</td>' +
+                                '<td>' + item.type_formatted + '</td>' +
+                                '<td>' + item.type_others + '</td>' +
+                                '<td><input type="text" class="score-class"  id="examScore'+ item.scoreId +'" name="examScore'+ item.scoreId +'" value="'+ item.SCORE +'" maxlength="5"></td>' +
+                                '<td><button class="btn-save" onclick="updateStudentClassDetails(\'update-score_others\','+ item.scoreId +')">Save</button></td>'
+                            );
+                        }else{
+                            tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                        }
+
+
+                        tableBody.append(row);
+                    });
+                } else {
+                    tableBody.html('<tr><td colspan="4">No data available.</td></tr>');
+                }
+            }
+        });
+    }
+}
+
+function updateStudentClassDetails(process,id){
+    const url = "http://localhost/student_monitoring/api/Assessment.php";
+
+    if(process == 'update-attendance'){
+        Swal.fire({
+            title: 'Do you want to Update this attendance?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Updating Attendance!',
+                    html: 'Processing',
+                    timer: 1000,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                process: process,
+                                attendance: id,
+                                status: $("#attStatus"+id).val(),
+                            },
+                            success: function (data) {
+                                const parsedData = JSON.parse(data); // Parse the response as JSON
+                                if (!parsedData.status) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '' + parsedData.message,
+                                    })
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '' + parsedData.message,
+                                        confirmButtonText: 'Close',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error:", textStatus, errorThrown);
+                            }
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+
+    if(process == 'update-score'){
+        Swal.fire({
+            title: 'Do you want to Update this score?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Updating Score!',
+                    html: 'Processing',
+                    timer: 1000,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                process: process,
+                                scoreId: id,
+                                score: $("#examScore"+id).val(),
+                            },
+                            success: function (data) {
+                                const parsedData = JSON.parse(data); // Parse the response as JSON
+                                if (!parsedData.status) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '' + parsedData.message,
+                                    })
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '' + parsedData.message,
+                                        confirmButtonText: 'Close',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error:", textStatus, errorThrown);
+                            }
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+
+    if(process == 'update-score_others'){
+        Swal.fire({
+            title: 'Do you want to Update this score?',
+            showDenyButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Updating Score!',
+                    html: 'Processing',
+                    timer: 1000,
+                    allowOutsideClick: false,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer) {
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: {
+                                process: process,
+                                scoreId: id,
+                                score: $("#examScore"+id).val(),
+                            },
+                            success: function (data) {
+                                const parsedData = JSON.parse(data); // Parse the response as JSON
+                                if (!parsedData.status) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '' + parsedData.message,
+                                    })
+
+                                } else {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '' + parsedData.message,
+                                        confirmButtonText: 'Close',
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                console.error("AJAX Error:", textStatus, errorThrown);
+                            }
+                        });
+                    }
+                })
+            } else if (result.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info')
+            }
+        })
+    }
+
+}
+
 function copy() {
     const textToCopy = $("#classcode").text(); // Specify the text you want to copy
     navigator.clipboard.writeText(textToCopy)
@@ -2173,6 +2901,9 @@ function sort(id) {
         case 'join-class-science':
             rows = $(".join-teacher-table tbody tr").get();
             break;
+        case 'student_classes_enrolled':
+            rows = $(".student-enrolled-table tbody tr").get();
+            break;
         default:
             break;
     }
@@ -2209,4 +2940,7 @@ function sort(id) {
     $.each(rows, function(index, row) {
         $('tbody').append(row);
     });
+
+    initializeModalScript();
 }
+

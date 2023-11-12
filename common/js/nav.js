@@ -52,9 +52,16 @@ function toggleSidenav() {
         collegeContainer.classList.toggle('hide');
         if (sidenav.classList.contains('hide')) {
             collegeContainer.style.marginLeft = '0';
-            classButtonContent.style.gap = '310px';
         } else {
             collegeContainer.style.marginLeft = '400px';
+        }
+    }
+
+    if(classButtonContent){
+        classButtonContent.classList.toggle('hide');
+        if (sidenav.classList.contains('hide')) {
+            classButtonContent.style.gap = '310px';
+        } else {
             classButtonContent.style.gap = '725px';
         }
     }
@@ -126,10 +133,14 @@ function toggleNotif() {
     }
 }
 
-document.addEventListener('click', function(event) {
-    var dropdown = document.getElementById('notificationDropdown');
-    var notification = document.querySelector('.notification');
-    if (event.target !== notification && !notification.contains(event.target)) {
-        dropdown.style.display = 'none';
-    }
-});
+
+var notification = document.querySelector('.notification');
+
+if (notification) {
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('notificationDropdown');
+        if (event.target !== notification && !notification.contains(event.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+}

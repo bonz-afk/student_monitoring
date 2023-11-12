@@ -337,7 +337,40 @@ if($classProcessGet == 'student-class-science'){
 
 // Check if any data was found
     if (empty($classList)) {
-        echo json_encode("No data found");
+        $sql = "SELECT CLASS_NAME, CLASS_CODE as first_code, YEAR,PROGRAM, SECTION, SEMESTER, ACADEMIC_YEAR
+                FROM tb_class
+                WHERE id = ?";
+
+
+// Create a prepared statement
+        $stmtCode = $mysqli->prepare($sql);
+
+        if (!$stmtCode) {
+            die('Database query failed: ' . mysqli_error($mysqli));
+        }
+
+        $stmtCode->bind_param("i", $classId);
+        $stmtCode->execute();
+
+// Check for errors
+        if ($stmtScience->errno) {
+            die('SQL Error: ' . $stmtCode->error);
+        }
+
+// Fetch and store the result data as an array
+        $resultCode = $stmtCode->get_result();
+
+        $classCode = array();
+
+        while ($row = $resultCode->fetch_assoc()) {
+            $classCode[] = $row;
+        }
+        if(empty($classCode)){
+            echo json_encode("No data found");
+        }else{
+            header('Content-Type: application/json');
+            echo json_encode($classCode);
+        }
     } else {
         // Send the data as JSON response
         header('Content-Type: application/json');

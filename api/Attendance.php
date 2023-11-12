@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id = $_POST['id'];
     $status = 'P';
+    $currentDate = date('Y-m-d');
 
     if (date('w') == 0) {
         echo json_encode(['status' => false, 'message' => 'Sunday No Attendance']);
@@ -25,6 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (array_key_exists($currentDate, $holidays)) {
         echo json_encode(['status' => false, 'message' => $holidays[$currentDate] . ". It's a holiday."]);
+        exit;
+    }
+
+    $queryScore = "SELECT TIME_IN from tb_attendance
+                            where STUDENT_ID = $user AND CLASS_ID = $id  AND DATE(TIME_IN) = '$currentDate'";
+
+    $resultScore = mysqli_query($mysqli, $queryScore);
+
+    if (mysqli_num_rows($resultScore) > 0) {
+        echo json_encode(['status' => false, 'message' => 'Attendance is Already Recorded']);
         exit;
     }
 

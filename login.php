@@ -22,7 +22,7 @@ if(!empty($_SESSION['user_id'])){
         <div class="container">
             <div class="login-form">
                 <div class="login-logo">
-                    <img src="common/images/logo/lpu-logo.png" width="200px" height="100px">
+                    <img src="common/images/logo/lpu-logo.png" width="300px" height="300px">
                 </div>
                 <div class="logo-title">
                     <p>Student Progress</p>

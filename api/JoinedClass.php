@@ -82,7 +82,7 @@ if($classProcess == 'join'){
                     $stmtUpdate->bind_param("siii", $classStatus, $enrolledId, $classId, $studentId);
 
                     if ($stmtUpdate->execute()) {
-                        $message = 'Successfully Join'; // Update message text
+                        $message = 'Success waiting for Professor / Teacher to accept your request'; // Update message text
                         $status = true;
                     }
                     else {

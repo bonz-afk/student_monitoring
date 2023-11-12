@@ -104,3 +104,13 @@
         right: 0;
     }
 }
+
+@media only screen and (max-width: 608px){
+    .modal-content {
+        position: fixed;
+        width: 300px;
+        top: -148px;
+        left: 0;
+        right: 0;
+    }
+}

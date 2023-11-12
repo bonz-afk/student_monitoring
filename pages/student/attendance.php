@@ -102,7 +102,6 @@ $current_dropdown = 'attendance'
             }
         }
     </style>
-    <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>

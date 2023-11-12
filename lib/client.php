@@ -5,6 +5,7 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/config.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/course_list_science.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/class_list_science.php';
+include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/student_list_science.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/student_join_class.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/account_list.php';
 include_once $_SERVER['DOCUMENT_ROOT']. '/student_monitoring/lib/student_list.php';

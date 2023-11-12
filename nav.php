@@ -1,5 +1,5 @@
-
-    <nav>
+<script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
+<nav>
         <div class="logo">
             <div class="logo-container">
                 <div class="menu-icon" onclick="toggleSidenav()" >
@@ -14,6 +14,7 @@
             </div>
         </div>
         <div class="nav-profile">
+            <?php if($_SESSION['role'] == 'TEACHER'){?>
             <div class="notification" style="color: #800000; cursor: pointer; font-size: 36px;">
                 <i class="fas fa-bell fa-xl" onclick="toggleNotif()"></i>
                 <span class="badge"><?php echo $notifTeacherCount ? $notifTeacherCount : 0; ?></span>
@@ -23,7 +24,7 @@
                             <?php foreach ($notifContent as $list) {?>
                                 <li>
                                     <div style="margin-bottom: 10px">
-                                       <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
+                                        <small>Class: </small> <b ><?php echo $list['CLASS_NAME']; ?></b>
                                     </div>
                                     <div class="student-with-btn">
                                         <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
@@ -32,11 +33,12 @@
 
                                 </li>
                             <?php }}else{?>
-                                <li style="text-align: center">No Notifications</li>
+                            <li style="text-align: center">No Notifications</li>
                         <?php }?>
                     </ul>
                 </div>
             </div>
+            <?php }?>
             <img src="../../common/images/logo/circle-account.svg"  id="toggleLogout" onclick="toggleDropdown()" style="cursor: pointer">
             <!-- Dropdown menu -->
             <div class="dropdown-menu" id="profileDropdown">
@@ -64,7 +66,7 @@
                     <li><a href="http://localhost/student_monitoring/pages/admin/teacher_account.php" class="sidebar-link <?php echo $current_dropdown === 'teacher' ? 'active-item' : ''; ?>">Teacher</a></li>
                 </ul>
             <?php }}?>
-            <?php if($_SESSION['role'] === 'TEACHER' || $_SESSION['role'] === 'ADMIN') { ?>
+            <?php if($_SESSION['role'] === 'TEACHER') { ?>
                 <a class="sidebar-link  <?php echo $current_page === 'classes' && $current_dropdown === null ? 'active-item' : ''; ?>" href="http://localhost/student_monitoring/pages/teacher/index.php" style="color: white">Classes</a>
                 <?php if ($current_page === 'classes') { ?>
                     <ul class="dropdown-container">
@@ -74,14 +76,8 @@
                     </ul>
                 <?php }?>
                 <a class="sidebar-link  <?php echo $current_page === 'assessment' && $current_dropdown === null ? 'active-item' : ''; ?>" href="http://localhost/student_monitoring/pages/teacher/assessment.php" style="color: white">Assessment</a>
-                <?php if ($current_page === 'assessment') { ?>
-                    <ul class="dropdown-container">
-                        <li><a href="assessment.php" class="sidebar-link <?php echo $current_dropdown === 'attendance' ? 'active-item' : ''; ?>">Attendance</a></li>
-                        <li><a href="class_science.php" class="sidebar-link <?php echo $current_dropdown === 'exam' ? 'active-item' : ''; ?>">Exam & Quizzes</a></li>
-                        <li><a href="#" class="sidebar-link <?php echo $current_dropdown === 'activities' ? 'active-item' : ''; ?>">Activities & Others</a></li>
-                    </ul>
-                <?php }}?>
-            <?php if($_SESSION['role'] === 'STUDENT' || $_SESSION['role'] === 'ADMIN') { ?>
+                <?php }?>
+            <?php if($_SESSION['role'] === 'STUDENT') { ?>
                 <a class="sidebar-link  <?php echo $current_page === 'college-classes' && $current_dropdown === null ? 'active-item' : ''; ?>" href="http://localhost/student_monitoring/pages/student" style="color: white">Classes</a>
                 <?php if ($current_page === 'college-classes') { ?>
                     <ul class="dropdown-container">
@@ -95,7 +91,7 @@
                     <ul class="dropdown-container">
                         <li><a href="http://localhost/student_monitoring/pages/student/attendance.php" class="sidebar-link <?php echo $current_dropdown === 'attendance' ? 'active-item' : ''; ?>">Attendance</a></li>
                         <li><a href="http://localhost/student_monitoring/pages/student/exam-quiz.php" class="sidebar-link <?php echo $current_dropdown === 'exam' ? 'active-item' : ''; ?>">Exam & Quizzes</a></li>
-                        <li><a href="#" class="sidebar-link <?php echo $current_dropdown === 'activities' ? 'active-item' : ''; ?>">Activities & Others</a></li>
+                        <li><a href="http://localhost/student_monitoring/pages/student/act_others.php" class="sidebar-link <?php echo $current_dropdown === 'activities' ? 'active-item' : ''; ?>">Activities & Others</a></li>
                     </ul>
                 <?php }}?>
 <!--                <a class="sidebar-link --><?php //echo $current_page === 'assessment' && $current_dropdown === null ? 'active-item' : ''; ?><!--" href="assessment.php" style="color: white">Assessment</a>-->
