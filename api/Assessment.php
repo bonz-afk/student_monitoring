@@ -90,7 +90,7 @@ if($process == 'attendance'){
             a.id as attId, DATE(a.TIME_IN) as date_only, a.STATUS, c.CLASS_NAME FROM tb_attendance as a
             LEFT join tb_user as u on u.id = a.STUDENT_ID
             LEFT join tb_class as c on a.CLASS_CODE = c.CLASS_CODE
-            WHERE a.CLASS_CODE = ? AND a.STUDENT_ID = ? AND a.TYPE = '$type' AND c.TYPE = '$type'";
+            WHERE a.CLASS_CODE = ? AND a.STUDENT_ID = ? AND a.TYPE = '$type' AND c.TYPE = '$type' AND c.STATUS = 'ON'";
 
 // Create a prepared statement
         $stmtAtt = $mysqli->prepare($sql);
@@ -126,7 +126,7 @@ if($process == 'attendance'){
             ) as fullname, CONCAT(UPPER(SUBSTRING(c.TYPE, 1, 1)), LOWER(SUBSTRING(c.TYPE, 2))) AS type_formatted,
             a.id as attId, c.CLASS_NAME  FROM tb_class_enrolled as a
             LEFT join tb_user as u on u.id = a.STUDENT
-            LEFT join tb_class as c on a.id = c.id
+            LEFT join tb_class as c on a.CLASS_ID = c.id
             WHERE c.id = $idmoto AND a.STUDENT = $studentId";
 
             $result = mysqli_query($mysqli, $query);

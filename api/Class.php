@@ -99,9 +99,6 @@ if($classProcess == 'add'){
 
             echo json_encode(['status' => $status, 'message' => $message]);
 
-            $stmtAdd1->close();
-            $stmtAdd2->close();
-
         }else{
 
             $sql1 = "INSERT INTO tb_class (COLLEGE_ID,ACADEMIC_YEAR,CLASS_NAME,PROGRAM,SEMESTER,YEAR,COURSE_CODE,SECTION,TYPE,
@@ -128,6 +125,7 @@ if($classProcess == 'add'){
             echo json_encode(['status' => $status, 'message' => $message]);
         }
         $stmtAdd1->close();
+        $stmtAdd2->close();
     }else{
         $error = errorRequest::getErrorMessage(405); // Get the error message for 405 (Method Not Allowed)
         http_response_code(405); // Set the HTTP response code

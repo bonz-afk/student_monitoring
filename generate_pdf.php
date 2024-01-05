@@ -349,15 +349,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $totalActExp = $row['ACTEXP'];
         $totalOthers = $row['OTHERS'];
     }
-    $attendanceConverted = ($totalAttendanceAttend / $totalAtt) * 100;
-    $quizConverted = $quizScore / $totalQuiz;
-    $expActConverted = $expActScore / $totalActExp;
-    $othersConverted = $otherScore / $totalOthers;
-    $totalPerformance = ($attendanceConverted + $quizConverted + $expActConverted + $othersConverted) * 0.30;
-    $peConverted = $peScore * 0.30;
-    $meConverted = $meScore * 0.40;
 
-    $midtermGrade = number_format($totalPerformance + $peConverted + $meConverted, 2, '.', '');
+    if(!empty($totalAtt) || !empty($totalQuiz)|| !empty($totalActExp) || !empty($totalOthers) || !empty($peScore) || !empty($meScore)){
+        $attendanceConverted = ($totalAttendanceAttend / $totalAtt) * 100;  //attendance
+        $quizConverted = $quizScore / $totalQuiz; // quiz
+        $expActConverted = $expActScore / $totalActExp; //activity or experiment
+        $othersConverted = $otherScore / $totalOthers;
+        $totalPerformance = ($attendanceConverted + $quizConverted + $expActConverted + $othersConverted) * 0.30; //performance = 30%
+        $peConverted = $peScore * 0.30; //prelim exam 30%
+        $meConverted = $meScore * 0.40; // midterm exam 40 %
+
+        $midtermGrade = number_format($totalPerformance + $peConverted + $meConverted, 2, '.', '');
+
+    }else{
+        $midtermGrade = 0;
+    }
+
+
+
+
 
     $html .= ' 
         <div style="text-align: center; margin-top: 10px;">
