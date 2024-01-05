@@ -1,0 +1,264 @@
+.main-account {
+    transition: margin-left 0.3s; /* Add smooth transition for opening/closing sidebar */
+}
+.account-container-title{
+    display: flex;
+    justify-content: center;
+}
+.account-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.account-title p {
+    font-size: 45px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+.account-button-content{
+    display: flex;
+    justify-content: space-between;
+    max-width: 1522px;
+    margin: 0 auto;
+}
+
+.account-button-content > div:first-child {
+    align-self: flex-start;
+}
+
+.account-button-content > div:last-child {
+    align-self: center;
+}
+
+
+.table-container {
+    width: 100%;
+    margin: 0 auto;
+    height: 400px;
+    overflow: auto;
+    background-color: #FFFFFF;
+    max-width: 1522px;
+    border-radius: 15px;
+}
+
+.course-table {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+}
+
+.course-table th{
+    padding: 20px;
+    font-size: 20px;
+}
+
+.course-table td {
+    padding: 10px; /* Add padding to create spacing */
+    font-size: 20px;
+}
+
+.course-table thead,tbody {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.college-body{
+    overflow: hidden;
+}
+
+.account-title img {
+    width: 250px;
+    height: 250px;
+}
+
+@media only screen and (max-height: 771px) {
+    .college-body{
+        overflow: scroll;
+    }
+    .table-container{
+        height: 100%;
+    }
+}
+
+@media  only screen and (max-width: 1148px) {
+    .main-account{
+        display: block;
+        margin-left: 0 !important;
+    }
+
+    .main-account.hide{
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 1336px) {
+    .account-title p {
+        font-size: 40px;
+    }
+    .account-title img {
+        width: 100px;
+        height: 100px;
+    }
+    .table-container{
+        max-width: 670px;
+    }
+    .account-button-content{
+        justify-content: space-evenly;
+        gap: 0 !important;
+        max-width: 670px;
+    }
+
+}
+@media only screen and (max-width: 1336px) {
+    .account-title p {
+        font-size: 40px;
+    }
+    .account-title img {
+        width: 100px;
+        height: 100px;
+    }
+    .table-container{
+        max-width: 670px;
+    }
+    .account-button-content{
+        justify-content: space-evenly;
+        gap: 0 !important;
+    }
+}
+@media only screen and (min-width: 1337px) and (max-width: 2000px) {
+    .account-title p {
+        font-size: 50px;
+    }
+    .account-title img {
+        width: 150px;
+        height: 150px;
+    }
+    .table-container{
+        max-width: 770px;
+    }
+    .account-button-content{
+        justify-content: space-evenly;
+        gap: 0 !important;
+        max-width: 770px;
+    }
+    .modal-content{
+        width: 750px;
+
+    }
+    .modal-content p{
+        font-size: 30px;
+
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .account-title p {
+        font-size: 30px;
+    }
+    .account-title img {
+        width: 100px;
+        height: 100px;
+    }
+    .table-container{
+        max-width: 565px;
+    }
+    .account-button-content{
+        justify-content: space-evenly;
+        gap: 0 !important;
+        max-width: 565px;
+    }
+}
+
+.edit-course{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.account-button-content.hide {
+    gap: 300px;
+}
+
+.add-course{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.edit-course > input, .add-course > input{
+    width: 100%;
+    height: 35px;
+    max-width: 630px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 0;
+    background-color: #e0e2e4;
+    padding: 10px;
+    text-indent: 10px;
+    font-size: 20px;
+    color: #800000;
+}
+
+.edit-course > edit-save-container,  .add-course > add-save-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.edit-course > input:focus, .add-course > input:focus{
+    outline: 0;
+}
+
+.edit-course > input::placeholder,.add-course > input::placeholder{
+    color: #800000;
+    opacity: .7;
+    font-size: 15px;
+}
+
+small.code-message.error,small.desc-message.error,small.code-message-edit.error,small.desc-message-edit.error {
+    align-self: start;
+    margin-left: 95px;
+    color: red;
+}
+
+.code-message.valid,.desc-message.valid,small.code-message-edit.valid,small.desc-message-edit.valid{
+    color: #5cb85c;
+    align-self: start;
+    margin-left: 95px;
+}
+
+.account-button-content div{
+    cursor: pointer;
+}
+
+.course.custom-select-class{
+    background-color: transparent;
+    border-bottom: 1px solid #800000;
+    border-radius: 0;
+    max-width: 195px;
+}
+
+.course-select:focus{
+    outline: 0;
+}
+
+.course-select {
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 0;
+    background-color: transparent;
+    text-indent: 10px;
+    font-size: 20px;
+    color: #800000;
+    padding: 0 48px 0 0;
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT']. '../student_monitoring/lib/client.php';
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $email = $_SESSION['email'];
 $user = $_SESSION['user_id'];
 
@@ -33,6 +34,8 @@ if($classProcess == 'add'){
     $am = trim($_POST['am']);
     $pm = trim($_POST['pm']);
     $code  =  generateString::generateUniqueRandomString(6);
+    $lec = 'LECTURE';
+    $lab = 'LABORATORY';
 
     if(empty($type)){
         echo json_encode(['status' => false, 'message' => errorRequest::getErrorMessage(400) ]);
@@ -59,39 +62,78 @@ if($classProcess == 'add'){
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $sql = "INSERT INTO tb_class (COLLEGE_ID,ACADEMIC_YEAR,CLASS_NAME,PROGRAM,SEMESTER,YEAR,COURSE_CODE,SECTION,TYPE,
+        if($type == 'BOTH'){
+            $sql1 = "INSERT INTO tb_class (COLLEGE_ID,ACADEMIC_YEAR,CLASS_NAME,PROGRAM,SEMESTER,YEAR,COURSE_CODE,SECTION,TYPE,
+                                        MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,CLASS_CODE,AM,PM,CREATED_AT,CREATED_BY,TEACHER,STATUS) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),$user,$user,'ON')";
+            $sql2 = "INSERT INTO tb_class (COLLEGE_ID,ACADEMIC_YEAR,CLASS_NAME,PROGRAM,SEMESTER,YEAR,COURSE_CODE,SECTION,TYPE,
                                         MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,CLASS_CODE,AM,PM,CREATED_AT,CREATED_BY,TEACHER,STATUS) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),$user,$user,'ON')";
 
 // Create a prepared statement
-        $stmtAdd = $mysqli->prepare($sql);
+            $stmtAdd1 = $mysqli->prepare($sql1);
 
-        if ($stmtAdd === false) {
-            echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error ]);
-            exit;
-        }
+            if ($stmtAdd1 === false) {
+                echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error ]);
+                exit;
+            }
+
+            $stmtAdd2 = $mysqli->prepare($sql2);
+
+            if ($stmtAdd2 === false) {
+                echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error ]);
+                exit;
+            }
 
 // Bind parameters to the statement
-        $stmtAdd->bind_param("isssisssssssssssss", $college,$academic,$class,$program,$semester,$year,$course,$section,$type,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm);
+            $stmtAdd1->bind_param("isssisssssssssssss", $college,$academic,$class,$program,$semester,$year,$course,$section,$lec,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm);
+            $stmtAdd2->bind_param("isssisssssssssssss", $college,$academic,$class,$program,$semester,$year,$course,$section,$lab,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm);
 
 // Execute the statement to insert data
-        if ($stmtAdd->execute()) {
-            $message = 'Successfully Added';
-            $status = true;
+            if ($stmtAdd1->execute() && $stmtAdd2->execute()) {
+                $message = 'Successfully Added';
+                $status = true;
 
-        } else {
-            $message = errorRequest::getErrorMessage(500);
-            $status = false;
+            } else {
+                $message = errorRequest::getErrorMessage(500);
+                $status = false;
+            }
+
+            echo json_encode(['status' => $status, 'message' => $message]);
+
+            $stmtAdd1->close();
+            $stmtAdd2->close();
+
+        }else{
+
+            $sql1 = "INSERT INTO tb_class (COLLEGE_ID,ACADEMIC_YEAR,CLASS_NAME,PROGRAM,SEMESTER,YEAR,COURSE_CODE,SECTION,TYPE,
+                                        MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,CLASS_CODE,AM,PM,CREATED_AT,CREATED_BY,TEACHER,STATUS) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),$user,$user,'ON')";
+
+            $stmtAdd1 = $mysqli->prepare($sql1);
+
+            if ($stmtAdd1 === false) {
+                echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error ]);
+                exit;
+            }
+
+            $stmtAdd1->bind_param("isssisssssssssssss", $college,$academic,$class,$program,$semester,$year,$course,$section,$type,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm);
+
+            if ($stmtAdd1->execute()) {
+                $message = 'Successfully Added';
+                $status = true;
+
+            } else {
+                $message = errorRequest::getErrorMessage(500);
+                $status = false;
+            }
+
+            echo json_encode(['status' => $status, 'message' => $message]);
         }
-
-        echo json_encode(['status' => $status, 'message' => $message]);
-
+        $stmtAdd1->close();
     }else{
         $error = errorRequest::getErrorMessage(405); // Get the error message for 405 (Method Not Allowed)
         http_response_code(405); // Set the HTTP response code
         echo json_encode(['status' => false,'error' => $error]);
         exit;
     }
-    $stmtAdd->close();
 }
 
 if($classProcess == 'delete'){
@@ -137,9 +179,10 @@ if($classProcess == 'delete-enrolled'){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $enrolledId = trim($_POST['id']);
+        $classCode = trim($_POST['classCode']);
         $enrolledStatus = 'OFF';
 
-        $sql = "UPDATE tb_class_enrolled SET STATUS = ? WHERE ID = ?";
+        $sql = "UPDATE tb_class_enrolled SET STATUS = ? WHERE CLASS_ID IN (SELECT id FROM tb_class where CLASS_CODE = '$classCode')";
 
         // Create a prepared statement
         $stmtDel = $mysqli->prepare($sql);
@@ -150,7 +193,7 @@ if($classProcess == 'delete-enrolled'){
         }
 
         // Bind parameters to the statement
-        $stmtDel->bind_param("si", $enrolledStatus, $enrolledId);
+        $stmtDel->bind_param("s", $enrolledStatus);
 
         // Execute the statement
         if ($stmtDel->execute()) {
@@ -222,7 +265,10 @@ if($classProcess == 'edit'){
     $year = trim($_POST['year']);
     $course = trim($_POST['course']);
     $section = trim($_POST['section']);
-    $type = trim($_POST['type']);
+    $attendance = trim($_POST['attendance']);
+    $quiz = trim($_POST['quiz']);
+    $actexp = trim($_POST['actexp']);
+    $others = trim($_POST['others']);
     $monday = trim($_POST['monday']);
     $tuesday = trim($_POST['tuesday']);
     $wednesday = trim($_POST['wednesday']);
@@ -232,11 +278,11 @@ if($classProcess == 'edit'){
     $am = trim($_POST['am']);
     $pm = trim($_POST['pm']);
     $code  =  generateString::generateUniqueRandomString(6);
-
-    if(empty($type)){
-        echo json_encode(['status' => false, 'message' => errorRequest::getErrorMessage(400) ]);
-        exit;
-    }
+//
+//    if(empty($type)){
+//        echo json_encode(['status' => false, 'message' => errorRequest::getErrorMessage(400) ]);
+//        exit;
+//    }
 
 
     if(empty($academic) || empty($class) || empty($program) || empty($semester) || empty($year) || empty($course) || empty($section)){
@@ -259,8 +305,8 @@ if($classProcess == 'edit'){
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $sql = "UPDATE tb_class SET ACADEMIC_YEAR = ?,CLASS_NAME = ?,PROGRAM = ?,SEMESTER = ?,YEAR = ?,COURSE_CODE = ?,SECTION = ?,TYPE = ?,
-                MONDAY = ?,TUESDAY = ?,WEDNESDAY = ?,THURSDAY = ?,FRIDAY = ?,SATURDAY = ?,CLASS_CODE = ?,AM = ?,PM = ?,CREATED_AT = NOW(),CREATED_BY = $user, TEACHER = $user WHERE id = $id";
+        $sql = "UPDATE tb_class SET ACADEMIC_YEAR = ?,CLASS_NAME = ?,PROGRAM = ?,SEMESTER = ?,YEAR = ?,COURSE_CODE = ?,SECTION = ?,
+                MONDAY = ?,TUESDAY = ?,WEDNESDAY = ?,THURSDAY = ?,FRIDAY = ?,SATURDAY = ?,CLASS_CODE = ?,AM = ?,PM = ?,CREATED_AT = NOW(),CREATED_BY = $user, TEACHER = $user, ATTENDANCE = ?, QUIZ = ?, ACTEXP = ? , OTHERS = ? WHERE id = $id";
 
 // Create a prepared statement
         $stmtEdit = $mysqli->prepare($sql);
@@ -271,7 +317,7 @@ if($classProcess == 'edit'){
         }
 
 // Bind parameters to the statement
-        $stmtEdit->bind_param("sssisssssssssssss", $academic,$class,$program,$semester,$year,$course,$section,$type,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm);
+        $stmtEdit->bind_param("sssissssssssssssssss", $academic,$class,$program,$semester,$year,$course,$section,$monday,$tuesday,$wednesday,$thursday,$friday,$saturday,$code,$am,$pm,$attendance,$quiz,$actexp,$others);
 
 // Execute the statement to insert data
         if ($stmtEdit->execute()) {
@@ -306,7 +352,7 @@ if($classProcessGet == 'student-class-science'){
                 ' ',
                 UPPER(LEFT(u.MIDDLENAME, 1)),'.'
             ) as fullname, 
-            e.id as enrolledid, a.CLASS_NAME,a.CLASS_CODE,a.YEAR,a.PROGRAM,a.SECTION,a.SEMESTER,a.ACADEMIC_YEAR,e.STATUS as enrollStatus
+            e.id as enrolledid, a.CLASS_NAME,a.CLASS_CODE,a.YEAR,a.PROGRAM,a.SECTION,a.SEMESTER,a.ACADEMIC_YEAR,e.STATUS as enrollStatus, a.CLASS_CODE
 			 FROM tb_class_enrolled as e
             LEFT join tb_user as u on u.id = e.STUDENT
             LEFT join tb_class as a on a.id = e.CLASS_ID
@@ -391,7 +437,7 @@ if($classProcess == 'class_change'){
             $queryString = "AND ACADEMIC_YEAR = '$academic'";
         }
 
-        $sql = "SELECT * FROM tb_class WHERE TEACHER = ? AND STATUS = 'ON' $queryString";
+        $sql = "SELECT *,CONCAT(UPPER(SUBSTRING(TYPE, 1, 1)), LOWER(SUBSTRING(TYPE, 2))) AS type_formatted FROM tb_class WHERE TEACHER = ? AND STATUS = 'ON' $queryString";
 
         // Create a prepared statement
         $stmt = $mysqli->prepare($sql);
@@ -425,29 +471,90 @@ if($classProcess == 'admit'){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $id = trim($_POST['enrollid']);
+        $classCode = trim($_POST['classCode']);
         $accept = 'ON';
 
-        $sqlUpdate = "UPDATE tb_class_enrolled SET STATUS = ?, ADMITTED_BY = ?, ADMITTED_DATE = NOW() WHERE id = ?";
+        $checkCode = "SELECT id from tb_class where CLASS_CODE = '$classCode'";
 
-        $stmtUpdate = $mysqli->prepare($sqlUpdate);
+        $resultCode = mysqli_query($mysqli, $checkCode);
+        $checkCodeCount = mysqli_num_rows($resultCode);
 
-        if ($stmtUpdate === false) {
-            echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error]);
+        if ($checkCodeCount) {
+            $ids = [];
+
+            while ($row = mysqli_fetch_assoc($resultCode)) {
+                $ids[] = $row['id'];
+            }
+            $sqlUpdate = "UPDATE tb_class_enrolled SET STATUS = ?, ADMITTED_BY = ?, ADMITTED_DATE = NOW() WHERE CLASS_ID = ?";
+
+            foreach ($ids as $listId) {
+                $stmtUpdate = $mysqli->prepare($sqlUpdate);
+
+                if ($stmtUpdate === false) {
+                    echo json_encode(['status' => false, 'message' => 'Error in preparing the statement: ' . $mysqli->error]);
+                    exit;
+                }
+
+                $stmtUpdate->bind_param("sii", $accept, $user,$listId);
+
+                if ($stmtUpdate->execute()) {
+                    $message = 'Successfully Admitted'; // Update message text
+                    $status = true;
+                }
+                else {
+                    $message = 'Error Admitted in class'; // Update message text
+                    $status = false;
+                }
+            }
+
+            // Close the statement
+            $stmtUpdate->close();
+
+            echo json_encode(['status' => $status, 'message' => $message]);
+        }else{
+            echo json_encode(['status' => false, 'message' => 'Something went wrong' . $mysqli->error]);
             exit;
         }
+    }else{
+        $error = errorRequest::getErrorMessage(405); // Get the error message for 405 (Method Not Allowed)
+        http_response_code(405); // Set the HTTP response code
+        echo json_encode(['status' => false,'error' => $error]);
+        exit;
+    }
+}
 
-        $stmtUpdate->bind_param("sii", $accept, $user,$id);
+if($classProcessGet == 'filter-class-year'){
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-        if ($stmtUpdate->execute()) {
-            $message = 'Successfully Admitted'; // Update message text
-            $status = true;
+        $id = $_SESSION['user_id']; // Assuming you have a user session
+
+        $selectedYear = isset($_GET['year']) ? $_GET['year'] : '';
+
+        $queryClassStudent = "SELECT t.id as classId, t.CLASS_NAME, t.TYPE, t.CLASS_CODE FROM `tb_class_enrolled` as e
+                      LEFT JOIN tb_class as t ON t.id = e.CLASS_ID
+                      WHERE e.STUDENT = $id AND t.STATUS = 'ON' AND e.STATUS = 'ON'
+                      AND t.ACADEMIC_YEAR = '$selectedYear'
+                      GROUP BY t.CLASS_CODE";
+
+        $resultClass = mysqli_query($mysqli, $queryClassStudent);
+
+        if (!$resultClass) {
+            die('Database query failed: ' . mysqli_error($mysqli));
         }
-        else {
-            $message = 'Error Admitted in class'; // Update message text
-            $status = false;
+
+        $studentClassList = array();
+        while ($row = mysqli_fetch_assoc($resultClass)) {
+            $studentClassList[] = $row;
         }
 
-        echo json_encode(['status' => $status, 'message' => $message]);
+// Output the filtered class list as JSON
+        header('Content-Type: application/json');
+        echo json_encode($studentClassList);
+    }else{
+        $error = errorRequest::getErrorMessage(405); // Get the error message for 405 (Method Not Allowed)
+        http_response_code(405); // Set the HTTP response code
+        echo json_encode(['status' => false,'error' => $error]);
+        exit;
     }
 }
 

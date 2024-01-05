@@ -1,0 +1,87 @@
+.attendance-container{
+    transition: margin-left 0.3s;
+}
+
+.attendance-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    max-width: 1522px;
+}
+
+.attendance-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.attendance-title p{
+    font-size: 45px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.attendance-item-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-bottom: 50px;
+}
+.student-classes.custom-select-class{
+    background-color: transparent;
+    border-bottom: 1px solid #800000;
+    border-radius: 0;
+    max-width: 300px;
+}
+
+.student-classes-select:focus{
+    outline: 0;
+}
+
+.student-classes-select {
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 0;
+    background-color: transparent;
+    text-indent: 10px;
+    font-size: 20px;
+    color: #800000;
+    padding: 0 48px 0 0;
+    cursor: pointer;
+}
+
+.student-class.font-mont{
+    font-size: 45px;
+}
+
+@media only screen and (max-width: 1518px) {
+    .attendance-content{
+        max-width: 700px;
+    }
+}
+
+
+@media only screen and (max-width: 802px) {
+    .attendance-content{
+        max-width: 600px !important;
+    }
+}
+
+@media only screen and (max-width: 616px) {
+    .attendance-content{
+        max-width: 350px !important;
+    }
+}

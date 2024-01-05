@@ -55,6 +55,11 @@ if(actInput){
     });
 }
 
+function formatType(str) {
+    var firstThreeLetters = str.substring(0, 3).toLowerCase();
+    var formattedString = firstThreeLetters.charAt(0).toUpperCase() + firstThreeLetters.slice(1);
+    return formattedString;
+}
 
 
 const form = document.getElementById("loginForm");
@@ -1021,7 +1026,7 @@ function logout(){
     })
 }
 
-function  createClass(process,id) {
+function  createClass(process,id,classCode) {
 
     const url = "http://localhost/student_monitoring/api/Class.php";
 
@@ -1224,7 +1229,7 @@ function  createClass(process,id) {
                     }else {
                         scheduleMessage.classList.remove('error');
                         scheduleMessage.classList.add('valid');
-                        scheduleMessage.textContent = '    Valid Schedule';
+                        scheduleMessage.textContent = 'Valid Schedule';
                         validSchedule = 1;
                     }
 
@@ -1418,6 +1423,7 @@ function  createClass(process,id) {
                             data: {
                                 process: process,
                                 id: id,
+                                classCode: classCode,
                             },
                             success: function (data) {
                                 const parsedData = JSON.parse(data); // Parse the response as JSON
@@ -1455,6 +1461,8 @@ function  createClass(process,id) {
     }
 
     if(process == 'view') {
+        var htmlToAppend = ''
+        $("#lecOrLab").empty();
         $.ajax({
             url: url,
             method: "GET",
@@ -1475,6 +1483,8 @@ function  createClass(process,id) {
                    $("#update-create-course").val(data[0].COURSE_CODE);
                    $("#update-create-section").val(data[0].SECTION);
                    $("#checkbox").val(data[0].SECTION);
+                   $("#update-class-att").val(data[0].ATTENDANCE);
+                   $("#update-class-quiz").val(data[0].QUIZ);
                     $("#update-monday").prop("checked", data[0].MONDAY === "ON" ? true : false);
                     $("#update-tuesday").prop("checked", data[0].TUESDAY === "ON" ? true : false);
                     $("#update-wednesday").prop("checked", data[0].WEDNESDAY === "ON" ? true : false);
@@ -1483,6 +1493,41 @@ function  createClass(process,id) {
                     $("#update-saturday").prop("checked", data[0].SATURDAY === "ON" ? true : false);
                     $("#update-am").val(data[0].AM);
                     $("#update-pm").val(data[0].PM);
+
+                    if(data[0].TYPE == 'LECTURE') {
+                        htmlToAppend = `
+                      <div class="create-class-item--content">
+                          <label><b>Total Activity</b></label>
+                          <input type="text" class="creat-class-input" id="update-class-actexp" name="update-class-actexp" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  value="${data[0].ACTEXP}" maxlength="2" placeholder="Total Activity">
+                          <small class="message message-update-class-act"></small>
+                      </div>
+                       <div class="create-class-item--content">
+                          <label><b>Total Others</b></label>
+                          <input type="text" class="creat-class-input" id="update-class-others" name="update-class-others" oninput="this.value = this.value.replace(/[^0-9]/g, '');" value="${data[0].OTHERS}" maxlength="2" placeholder="Total Others">
+                          <small class="message message-update-class-others"></small>
+                      </div>
+                    `;
+                    }
+
+                    if(data[0].TYPE == 'LABORATORY'){
+                         htmlToAppend = `
+                      <div class="create-class-item--content">
+                          <label><b>Total Experiment</b></label>
+                          <input type="text" class="creat-class-input" id="update-class-actexp" name="update-class-actexp" oninput="this.value = this.value.replace(/[^0-9]/g, '');" value="${data[0].ACTEXP}" maxlength="2" placeholder="Total Experiment">
+                          <small class="message message-update-class-exp"></small>
+                      </div>
+                       <div class="create-class-item--content">
+                          <label><b>Total Others</b></label>
+                          <input type="text" class="creat-class-input" id="update-class-others" name="update-class-others" oninput="this.value = this.value.replace(/[^0-9]/g, '');" value="${data[0].OTHERS}" maxlength="2" placeholder="Total Others">
+                          <small class="message message-update-class-lab-others"></small>
+                      </div>
+                    `;
+                    }
+
+                    // Append the HTML code to the specified div using jQuery
+                    $("#lecOrLab").append(htmlToAppend);
+
+
                 } else {
                     console.log("No data available or 'id' not found in the response.");
                 }
@@ -1666,20 +1711,20 @@ function  createClass(process,id) {
                     validSection = 1;
                 }
 
-                if($("#update-create-type").val() === "" || $("#update-create-type").val() === undefined){
-                    typeMessage.textContent = 'Type is Required';
-                    typeMessage.removeAttribute('hidden');
-                    typeMessage.classList.remove('valid');
-                    typeMessage.classList.add('error');
-
-                    validType = 0;
-
-                }else{
-                    typeMessage.classList.remove('error');
-                    typeMessage.classList.add('valid');
-                    typeMessage.textContent = 'Valid Type';
-                    validType = 1;
-                }
+                // if($("#update-create-type").val() === "" || $("#update-create-type").val() === undefined){
+                //     typeMessage.textContent = 'Type is Required';
+                //     typeMessage.removeAttribute('hidden');
+                //     typeMessage.classList.remove('valid');
+                //     typeMessage.classList.add('error');
+                //
+                //     validType = 0;
+                //
+                // }else{
+                //     typeMessage.classList.remove('error');
+                //     typeMessage.classList.add('valid');
+                //     typeMessage.textContent = 'Valid Type';
+                //     validType = 1;
+                // }
 
                 let atLeastOneChecked = false;
                 checkBoxes.forEach(function (checkbox) {
@@ -1729,7 +1774,7 @@ function  createClass(process,id) {
                     }
                 }
 
-                let validated = validAcademic === 1 && validClassName === 1 && validProgram === 1 && validSemester === 1 && validYear === 1 && validCourse === 1 && validSection === 1 && validType === 1 && validSchedule === 1 && validTime === 1 ? 1 : 0;
+                let validated = validAcademic === 1 && validClassName === 1 && validProgram === 1 && validSemester === 1 && validYear === 1 && validCourse === 1 && validSection === 1 && validSchedule === 1 && validTime === 1 ? 1 : 0;
 
                 if(validated === 1){
                     Swal.fire({
@@ -1756,7 +1801,10 @@ function  createClass(process,id) {
                                     year: $("#update-create-year").val(),
                                     course: $("#update-create-course").val(),
                                     section: $("#update-create-section").val(),
-                                    type: $("#update-create-type").val(),
+                                    attendance: $("#update-class-att").val(),
+                                    quiz: $("#update-class-quiz").val(),
+                                    actexp: $("#update-class-actexp").val(),
+                                    others: $("#update-class-others").val(),
                                     monday: $("#update-monday").is(":checked") ? "ON" : "OFF",
                                     tuesday: $("#update-tuesday").is(":checked") ? "ON" : "OFF",
                                     wednesday: $("#update-wednesday").is(":checked") ? "ON" : "OFF",
@@ -1836,7 +1884,7 @@ function  createClass(process,id) {
                         var enrollStatusIcon = ''; // Declare the variable
 
                         if (item.enrollStatus == 'PENDING') {
-                            enrollStatusIcon = '<i class="fa-solid fa-person-circle-check fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'admit\',' + item.enrolledid + ')"></i>';
+                            enrollStatusIcon = '<i class="fa-solid fa-person-circle-check fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'admit\',' + item.enrolledid + ',\'' + item.CLASS_CODE + '\')"></i>';
                         }
 
                         var statusCell = (item.enrollStatus == "ON") ? "Joined" : (item.enrollStatus == "PENDING") ? 'Pending' : 'No Data';
@@ -1844,7 +1892,7 @@ function  createClass(process,id) {
                         row.html(
                             '<td>' + (item.fullname ? item.fullname : "No Data") + '</td>' +
                             '<td>' + statusCell + '</td>' +
-                            '<td>' + (item.enrolledid ? enrollStatusIcon + '&nbsp &nbsp' + '<i class="fa-solid fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'delete-enrolled\',' + item.enrolledid + ')"></i>' : "No Data") + '</td>'
+                            '<td>' + (item.enrolledid ? enrollStatusIcon + '&nbsp &nbsp' + '<i class="fa-solid fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="createClass(\'delete-enrolled\',' + item.enrolledid + ',\'' + item.CLASS_CODE + '\')"></i>' : "No Data") + '</td>'
                         );
 
                         tableBody.append(row);
@@ -1883,6 +1931,7 @@ function  createClass(process,id) {
                             data: {
                                 process: process,
                                 enrollid: id,
+                                classCode: classCode,
                             },
                             success: function (data) {
                                 const parsedData = JSON.parse(data); // Parse the response as JSON
@@ -2068,8 +2117,8 @@ function classYearChange(process){
                            '<td>' + item.CLASS_NAME + '</td>' +
                            '<td>' + item.c_code + '</td>' +
                            '<td>' + item.SECTION + '</td>' +
-                           '<td>' + (item.statusEnroll == "ON" ? "Joined" : "PENDING") + '</td>' +
-                           '<td><i class="fas fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="joinedClasses(\'leave\', ' + item.enrolledId + ')"></i></td>'
+                           '<td>' + (item.statusEnroll == "ON" ? "Joined" : "Pending") + '</td>' +
+                           '<td><i class="fas fa-trash fa-xl" style="color: #800000; cursor: pointer" onclick="joinedClasses(\'leave\', \'' + item.CLASS_CODE + '\')"></i></td>'
                        );
 
                        tableBody.append(row);
@@ -2095,10 +2144,14 @@ function classYearChange(process){
 
                if (Array.isArray(data) && data.length > 0) {
                    $.each(data, function (index, item) {
+                       var term = item.SEMESTER == 1 ? "I" : "II";
                        var row = $("<tr>");
                        row.html(
                            '<td>' + item.CLASS_NAME + '</td>' +
                            '<td>' + item.COURSE_CODE + '</td>' +
+                           '<td>' + item.type_formatted + '</td>' +
+                           '<td>' + term + '</td>' +
+                           '<td>' + item.ACADEMIC_YEAR + '</td>' +
                            '<td>' +
                            '<i class="fa-solid fa-eye fa-xl openModalBtn" data-modal="classView" onclick="createClass(\'student-class-science\',' + item.id + ')" style="color: #800000; cursor: pointer"></i> &nbsp;' +
                            '<i class="fa-solid fa-pen-to-square fa-xl openModalBtn" data-modal="classEdit" onclick="createClass(\'view\',' + item.id + ')" style="color: #800000; cursor: pointer"></i> &nbsp;' +
@@ -2108,11 +2161,8 @@ function classYearChange(process){
 
 
                        tableBody.append(row);
-                       $(document).off('click', '.openModalBtn').on('click', '.openModalBtn', function() {
-                           var modalType = $(this).data('modal');
-                           var itemId = $(this).data('id');
-                           openModal(modalType, itemId);
-                       });
+
+                       initializeModalScript();
                    });
                } else {
                    tableBody.html("No data available.");
@@ -2120,6 +2170,31 @@ function classYearChange(process){
            }
        });
    }
+
+}
+
+function filterClasses(process) {
+    const url = "http://localhost/student_monitoring/api/Class.php";
+    var selectedYear = $("#monitoring_year").val();
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { process: process, year: selectedYear },
+        success: function(response) {
+            var classesSelect = $("#monitoring_class");
+            classesSelect.empty(); // Clear existing options
+
+            // Add options based on the filtered class list
+            classesSelect.append("<option value=''>Class</option>");
+            $.each(response, function(index, classInfo) {
+                classesSelect.append("<option value='" + classInfo.CLASS_CODE + "'>" + classInfo.CLASS_NAME + "</option>");
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX request failed: " + status + ", " + error);
+        }
+    });
 }
 
 function attendance(){
@@ -2135,12 +2210,20 @@ function attendance(){
         validated = 0;
     }
 
+    if($("#student-classes-term").val() == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Please Select a Term',
+        })
+        validated = 0;
+    }
+
 
     if(validated === 1){
         $.ajax({
             url: url,
             method: "post",
-            data: {id: $("#student-classes-select").val()},
+            data: {id: $("#student-classes-select").val(), term : $("#student-classes-term").val()},
             success:function (data){
                 const parsedData = JSON.parse(data); // Parse the response as JSON
                 if (!parsedData.status) {
@@ -2494,7 +2577,7 @@ function enrolledStudentFilter(process) {
                                 '<td>' + item.fullname + '</td>' +
                                 '<td>' + item.CLASS_NAME + '</td>' +
                                 '<td>' + item.type_formatted + '</td>' +
-                                '<td><i class="fas fa-clipboard-user fa-xl openModalBtn" data-modal="studentAttendance" style="color: #800000; cursor: pointer" onclick="studentClassDetails(\'attendance\', ' + item.enrollClass + ', ' + item.uid + ')"></i> &nbsp; <i class="fa-solid fa-newspaper fa-xl openModalBtn" data-modal="studentScore"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'score\', ' + item.enrollClass + ', ' + item.uid + ')" ></i> &nbsp; <i class="fa-solid fa-computer fa-xl openModalBtn" data-modal="studentOthers"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'others\', ' + item.enrollClass + ', ' + item.uid + ')"></i></td>'
+                                '<td><i class="fas fa-clipboard-user fa-xl openModalBtn" data-modal="studentAttendance" style="color: #800000; cursor: pointer" onclick="studentClassDetails(\'attendance\', ' + item.enrollClass + ',\'' + item.CLASS_CODE + '\', ' + item.uid + ', \'' + item.TYPE + '\')"></i> &nbsp; <i class="fa-solid fa-newspaper fa-xl openModalBtn" data-modal="studentScore"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'score\', ' + item.enrollClass + ',\'' + item.CLASS_CODE + '\', ' + item.uid + ', \'' + item.TYPE + '\')" ></i> &nbsp; <i class="fa-solid fa-computer fa-xl openModalBtn" data-modal="studentOthers"  style="color: #800000;cursor: pointer" onclick="studentClassDetails(\'others\', ' + item.enrollClass + ',\'' + item.CLASS_CODE + '\', ' + item.uid + ', \'' + item.TYPE + '\')"></i></td>'
                             );
 
                             tableBody.append(row);
@@ -2534,7 +2617,7 @@ function enrolledStudentFilter(process) {
     }, 100);
 }
 
-function studentClassDetails(process,classId,studentId){
+function studentClassDetails(process,id,classId,studentId,type){
     const url = "http://localhost/student_monitoring/api/Assessment.php";
 
     if(process == 'attendance'){
@@ -2544,7 +2627,7 @@ function studentClassDetails(process,classId,studentId){
         $.ajax({
             url: url,
             method: "GET",
-            data: {process: process, classId: classId, studentId: studentId},
+            data: {process: process, id: id, classId: classId, studentId: studentId, type: type},
             success: function (data){
                 var className = data[0].CLASS_NAME;
                 var studentName = data[0].fullname;
@@ -2583,11 +2666,11 @@ function studentClassDetails(process,classId,studentId){
     if(process == 'score'){
         var tableBody = $(".class-student-score tbody");
         tableBody.empty();
-
+        console.log(type)
         $.ajax({
             url: url,
             method: "GET",
-            data: {process: process, classId: classId, studentId: studentId},
+            data: {process: process, id: id, classId: classId, studentId: studentId, type: type},
             success: function (data){
                 var className = data[0].CLASS_NAME;
                 var studentName = data[0].fullname;
@@ -2609,7 +2692,6 @@ function studentClassDetails(process,classId,studentId){
                             var type = item.TYPE == "QUIZ" ? "Quiz" : item.TYPE;
                             row.html(
                                 '<td>' + item.date_only + '</td>' +
-                                '<td>' + item.type_formatted + '</td>' +
                                 '<td>' + type + '</td>' +
                                 '<td><input type="text" class="score-class"  id="examScore'+ item.scoreId +'" name="examScore'+ item.scoreId +'" value="'+ item.SCORE +'" maxlength="5"></td>' +
                                 '<td><button class="btn-save" onclick="updateStudentClassDetails(\'update-score\','+ item.scoreId +')">Save</button></td>'
@@ -2634,7 +2716,7 @@ function studentClassDetails(process,classId,studentId){
         $.ajax({
             url: url,
             method: "GET",
-            data: {process: process, classId: classId, studentId: studentId},
+            data: {process: process, id: id, classId: classId, studentId: studentId, type: type},
             success: function (data){
                 var className = data[0].CLASS_NAME;
                 var studentName = data[0].fullname;
@@ -2653,7 +2735,6 @@ function studentClassDetails(process,classId,studentId){
                         if(item.date_only){
                             row.html(
                                 '<td>' + item.date_only + '</td>' +
-                                '<td>' + item.type_formatted + '</td>' +
                                 '<td>' + item.type_others + '</td>' +
                                 '<td><input type="text" class="score-class"  id="examScore'+ item.scoreId +'" name="examScore'+ item.scoreId +'" value="'+ item.SCORE +'" maxlength="5"></td>' +
                                 '<td><button class="btn-save" onclick="updateStudentClassDetails(\'update-score_others\','+ item.scoreId +')">Save</button></td>'
@@ -2862,6 +2943,58 @@ function updateStudentClassDetails(process,id){
         })
     }
 
+}
+
+function generatePDF() {
+
+    const url = "http://localhost/student_monitoring/api/Report.php"
+    let valid = 1;
+
+    if($("#monitoring_year").val() == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Please Select Academic Year',
+        })
+        valid = 0;
+    }
+
+    if($("#monitoring_class").val() == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Please Select Class',
+        })
+        valid = 0;
+    }
+
+    if(valid == 1){
+        document.getElementById('pdfForm').submit();
+    }
+}
+
+function filterTypeAct(){
+    var selectedOption = $("#act-class").find("option:selected");
+    var text = selectedOption.text();
+
+    var lastThreeCharacters = text.slice(-3);
+
+    $("#act-type").empty();
+
+    // Append the first option
+    var newOption1 = $("<option>").val("").text("Type");
+    var newOption2 = $("<option>").val("ACTIVITY").text("Activity");
+    var newOption3 = $("<option>").val("EXPERIMENT").text("Experiment");
+    var newOption4 = $("<option>").val("OTHERS").text("Others");
+
+    $("#act-type").append(newOption1);
+
+    if(lastThreeCharacters === 'LEC' || lastThreeCharacters === 'lec'){
+        $("#act-type").append(newOption2);
+    }
+
+    if(lastThreeCharacters === 'LAB' || lastThreeCharacters === 'lab'){
+        $("#act-type").append(newOption3);
+    }
+    $("#act-type").append(newOption4);
 }
 
 function copy() {

@@ -14,8 +14,18 @@ if($process == 'quiz-exam'){
         $examDate = trim($_POST['examDate']);
         $type = trim($_POST['type']);
 
+        $explodedValues = explode("| ", $class);
+
+
+        $explodedValues = array_map('trim', $explodedValues);
+        if (count($explodedValues) == 2) {
+            [$code, $classType] = $explodedValues;
+        } else {
+            echo json_encode(['status' => false, 'message' => "Invalid Lec Lab"]);
+        }
+
         $queryScore = "SELECT EXAM_DATE from tb_score
-                            where STUDENT_ID = $user AND CLASS_ID = $class AND TYPE = '$type' AND EXAM_DATE = '$examDate'";
+                            where STUDENT_ID = $user AND CLASS_CODE = '$code' AND CLASS_TYPE = '$classType' AND EXAM_DATE = '$examDate'";
 
         $resultScore = mysqli_query($mysqli, $queryScore);
 
@@ -24,7 +34,27 @@ if($process == 'quiz-exam'){
             exit;
         }
 
-        $sql = "INSERT INTO tb_score (CLASS_ID,STUDENT_ID,TYPE,SCORE,TERM,EXAM_DATE,CREATED_DATE) VALUES (?,?,?,?,?,?,NOW())";
+        if ($type === 'PE' || $type === 'ME' || $type === 'SE' || $type === 'FE') {
+            // Check if the type exists in the database
+            $checkTypeQuery = "SELECT COUNT(*) as typeCount FROM tb_score 
+                where STUDENT_ID = $user AND CLASS_CODE = '$code' AND CLASS_TYPE = '$classType' AND TERM = $term";
+            $checkTypeResult = mysqli_query($mysqli, $checkTypeQuery);
+
+            if (!$checkTypeResult) {
+                echo json_encode(['status' => false, 'message' => 'Error checking type: ' . mysqli_error($mysqli)]);
+                exit;
+            }
+
+            $typeCount = mysqli_fetch_assoc($checkTypeResult)['typeCount'];
+
+            if ($typeCount > 0) {
+                // The type already exists, send an alert or handle accordingly
+                echo json_encode(['status' => false, 'message' => 'Score is Already Recorded']);
+                exit;
+            }
+        }
+
+        $sql = "INSERT INTO tb_score (CLASS_CODE,STUDENT_ID,TYPE,SCORE,TERM,EXAM_DATE,CREATED_DATE,CLASS_TYPE) VALUES (?,?,?,?,?,?,NOW(),'$classType')";
 
 // Create a prepared statement
         $stmtAdd = $mysqli->prepare($sql);
@@ -35,7 +65,7 @@ if($process == 'quiz-exam'){
         }
 
 // Bind parameters to the statement
-        $stmtAdd->bind_param("iisiss", $class,$user, $type, $score, $term, $examDate);
+        $stmtAdd->bind_param("sisiss", $code,$user, $type, $score, $term, $examDate);
 
 // Execute the statement to insert data
         if ($stmtAdd->execute()) {
@@ -68,9 +98,17 @@ if($process == 'activity-others'){
         $examDate = trim($_POST['examDate']);
         $type = trim($_POST['type']);
 
+        $explodedValues = explode("| ", $class);
+
+        $explodedValues = array_map('trim', $explodedValues);
+        if (count($explodedValues) == 2) {
+            [$code, $classType] = $explodedValues;
+        } else {
+            echo json_encode(['status' => false, 'message' => "Invalid Lec Lab"]);
+        }
 
         $queryScore = "SELECT EXAM_DATE from tb_score
-                            where STUDENT_ID = $user AND CLASS_ID = $class AND TYPE = '$type' AND EXAM_DATE = '$examDate'";
+                            where STUDENT_ID = $user AND CLASS_CODE = '$code' AND CLASS_TYPE = '$type' AND EXAM_DATE = '$examDate'";
 
         $resultScore = mysqli_query($mysqli, $queryScore);
 
@@ -79,7 +117,7 @@ if($process == 'activity-others'){
             exit;
         }
 
-        $sql = "INSERT INTO tb_score (CLASS_ID,STUDENT_ID,TYPE,SCORE,TERM,EXAM_DATE,CREATED_DATE) VALUES (?,?,?,?,?,?,NOW())";
+        $sql = "INSERT INTO tb_score (CLASS_CODE,STUDENT_ID,TYPE,SCORE,TERM,EXAM_DATE,CREATED_DATE,CLASS_TYPE) VALUES (?,?,?,?,?,?,NOW(),'$classType')";
 
 // Create a prepared statement
         $stmtAddAct = $mysqli->prepare($sql);
@@ -90,7 +128,7 @@ if($process == 'activity-others'){
         }
 
 // Bind parameters to the statement
-        $stmtAddAct->bind_param("iisiss", $class,$user, $type, $score, $term, $examDate);
+        $stmtAddAct->bind_param("sisiss", $code,$user, $type, $score, $term, $examDate);
 
 // Execute the statement to insert data
         if ($stmtAddAct->execute()) {

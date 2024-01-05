@@ -3,11 +3,23 @@ include_once  $_SERVER['DOCUMENT_ROOT'] . '/student_monitoring/lib/client.php';
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 if(!empty($_SESSION['user_id'])){
-    session_destroy();
-    header('Location: index.php');
-    exit();
-}
+    if($_SESSION['role'] == 'ADMIN'){
 
+        header('Location: http://localhost/student_monitoring/pages/admin/college.php');
+        exit();
+    }
+    if($_SESSION['role'] == 'TEACHER'){
+
+        header('Location: http://localhost/student_monitoring/pages/teacher');
+        exit();
+    }
+    if($_SESSION['role'] == 'STUDENT'){
+
+        header('Location: http://localhost/student_monitoring/pages/student');
+        exit();
+    }
+}
+session_destroy();
 ?>
 <!DOCTYPE html>
 <html lang="en">

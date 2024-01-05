@@ -11,11 +11,11 @@ if(isset($_SESSION['user_id']) || !empty(($_SESSION['user_id']) )){
                 UPPER(LEFT(u.MIDDLENAME, 1)),'.'
             ) as fullname, 
             e.id as enrolledid, a.CLASS_NAME,a.CLASS_CODE,a.YEAR,a.PROGRAM,a.SECTION,a.SEMESTER,a.ACADEMIC_YEAR,e.STATUS as enrollStatus, CONCAT(UPPER(SUBSTRING(a.TYPE, 1, 1)), LOWER(SUBSTRING(a.TYPE, 2))) AS type_formatted,
-            a.id as enrollClass, u.id as uid
+            a.id as enrollClass, u.id as uid, a.TYPE
 			 FROM tb_class_enrolled as e
             LEFT join tb_user as u on u.id = e.STUDENT
             LEFT join tb_class as a on a.id = e.CLASS_ID
-            WHERE u.role = 'STUDENT' AND a.TEACHER = $id  AND a.COLLEGE_ID = 2 AND a.STATUS = 'ON' AND u.STATUS = 'ON' AND e.STATUS <> 'OFF'";
+            WHERE u.role = 'STUDENT' AND a.TEACHER = $id  AND a.COLLEGE_ID = 2 AND a.STATUS = 'ON' AND u.STATUS = 'ON' AND e.STATUS = 'ON'";
     $result = mysqli_query($mysqli, $query);
 
     if (!$result) {

@@ -1,0 +1,72 @@
+.main-account {
+    transition: margin-left 0.3s;
+}
+.main-content{
+    margin: 100px auto;
+}
+.account-container-title{
+    display: inline;
+}
+.account-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.account.font-mont{
+    font-size: 50px;
+}
+.account-container-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.account-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #FFFFFF;
+    color: #000000;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 10px;
+    transition: width 0.3s, height 0.3s;
+    cursor: pointer;
+}
+
+
+.account-item:hover img{
+    width: 15rem !important;
+    height: 15rem !important;
+}
+
+.account-item:hover{
+    text-decoration: none;
+    font-size: 30px;
+}
+
+@media  only screen and (max-width: 1148px) {
+    .main-account{
+        display: block;
+        margin-left: 0 !important;
+    }
+
+    .main-account.hide{
+        display: none;
+    }
+    .account.font-mont {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 668px) {
+    .account-container-item {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -13,77 +13,7 @@ $current_dropdown = null;
     <title>Student Monitoring</title>
     <link rel="stylesheet" href="../../common/css/common.css">
     <link rel="stylesheet" href="../../common/css/nav.css">
-
-    <style>
-        .assessment-container {
-            transition: margin-left 0.3s;
-        }
-        .assessment-container-title{
-            display: flex;
-            justify-content: center;
-        }
-        .assessment-title{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .assessment.font-mont {
-            font-size: 50px;
-        }
-        .list-assessment-container{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 50px;
-        }
-        .assessment-main{
-            margin: 100px auto;
-        }
-
-        .assessment-item{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background: #FFFFFF;
-            color: #000000;
-            text-decoration: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            padding: 10px;
-            transition: width 0.3s, height 0.3s;
-            cursor: pointer;
-        }
-
-        .assessment-item:hover{
-            text-decoration: none;
-            font-size: 30px;
-        }
-
-
-        .assessment-item:hover img{
-            width: 15rem !important;
-            height: 15rem !important;
-        }
-
-        .assessment-item:hover p{
-            width: 200px;
-        }
-
-        .assessment-item-content p{
-            width: 130px;
-            text-align: center;
-            margin: 10px 0 0;
-            letter-spacing: 1px;
-        }
-
-        .assessment-item-content{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-    </style>
+    <link rel="stylesheet" href="../../common/css/student/assessment.css">
 </head>
 <body>
 

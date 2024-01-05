@@ -31,6 +31,10 @@ if($courseProcess == 'add'){
     }
 
     if(isset($_POST['course_id'])){
+        $collegeID = trim($_POST['course_id']);
+    }
+
+    if(isset($_POST['college_id'])){
         $collegeID = trim($_POST['college_id']);
     }
 

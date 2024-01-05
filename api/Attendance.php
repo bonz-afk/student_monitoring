@@ -16,30 +16,39 @@ $currentDate = date("m-d");
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $id = $_POST['id'];
+    $term = $_POST['term'];
     $status = 'P';
     $currentDate = date('Y-m-d');
-
-    if (date('w') == 0) {
-        echo json_encode(['status' => false, 'message' => 'Sunday No Attendance']);
-        exit;
-    }
+    $explodedValues = explode("| ", $id);
+//
+//    if (date('w') == 0) {
+//        echo json_encode(['status' => false, 'message' => 'Sunday No Attendance']);
+//        exit;
+//    }
 
     if (array_key_exists($currentDate, $holidays)) {
         echo json_encode(['status' => false, 'message' => $holidays[$currentDate] . ". It's a holiday."]);
         exit;
     }
 
-    $queryScore = "SELECT TIME_IN from tb_attendance
-                            where STUDENT_ID = $user AND CLASS_ID = $id  AND DATE(TIME_IN) = '$currentDate'";
-
-    $resultScore = mysqli_query($mysqli, $queryScore);
-
-    if (mysqli_num_rows($resultScore) > 0) {
-        echo json_encode(['status' => false, 'message' => 'Attendance is Already Recorded']);
-        exit;
+    $explodedValues = array_map('trim', $explodedValues);
+    if (count($explodedValues) == 2) {
+        [$code, $type] = $explodedValues;
+    } else {
+        echo json_encode(['status' => false, 'message' => "Invalid Lec Lab"]);
     }
 
-    $sql = "INSERT INTO tb_attendance (STUDENT_ID,CLASS_ID,TIME_IN,STATUS) VALUES ($user,?,NOW(),?)";
+    $queryScore = "SELECT TIME_IN from tb_attendance
+                            where STUDENT_ID = $user AND CLASS_CODE = '$code' AND TYPE = '$type'  AND DATE(TIME_IN) = '$currentDate'";
+
+    $resultScore = mysqli_query($mysqli, $queryScore);
+//
+//    if (mysqli_num_rows($resultScore) > 0) {
+//        echo json_encode(['status' => false, 'message' => 'Attendance is Already Recorded']);
+//        exit;
+//    }
+
+    $sql = "INSERT INTO tb_attendance (STUDENT_ID,CLASS_CODE,TIME_IN,STATUS,TERM,TYPE) VALUES ($user,?,NOW(),?,?,'$type')";
 
 // Create a prepared statement
     $stmtAdd = $mysqli->prepare($sql);
@@ -50,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 // Bind parameters to the statement
-    $stmtAdd->bind_param("is", $id,$status);
+    $stmtAdd->bind_param("ssi", $code,$status,$term);
 
 // Execute the statement to insert data
     if ($stmtAdd->execute()) {

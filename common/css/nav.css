@@ -403,3 +403,23 @@ a:hover {
 .notification-dropdown::-webkit-scrollbar-track {
     background: #C2B280; /* Color of scrollbar track in Chrome/Safari */
 }
+
+
+.custom-select-class::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.nav-custom-select-class::after {
+    content: '\25BC';
+    position: absolute;
+    top: 50%;
+    right: -28px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: transparent;
+}

@@ -1,0 +1,89 @@
+.monitoring-container{
+    transition: margin-left 0.3s;
+}
+
+.monitoring-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: transparent;
+    border-radius: 20px;
+    max-width: 1522px;
+}
+
+.monitoring-title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.monitoring-title p {
+    font-size: 45px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
+
+.nav.custom-select-class{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    max-width: 400px;
+}
+
+.custom-select-class::after {
+    content: '\25BC';
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.nav-pdf{
+    appearance: none;
+    width: 100%;
+    height: 35px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 0;
+    background-color: #FFFFFF;
+    text-indent: 10px;
+    font-size: 20px;
+    color: #800000;
+    padding: 0 48px 0 0;
+}
+
+.nav-pdf:focus{
+    outline: none;
+}
+
+.form-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+.monitoring.btn-maroon{
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    max-width: 197px;
+    width: 100%;
+}
+
+.pdfContainer{
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-container label, .radio-input{
+    cursor: pointer;
+}

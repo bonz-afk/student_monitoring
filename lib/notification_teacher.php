@@ -1,12 +1,12 @@
 <?php
 
-if(!empty($_SESSION['user_id'])) {
+if(!empty($_SESSION['user_id']) && $_SESSION['role'] == 'TEACHER') {
     $id = $_SESSION['user_id'];
 
-    $query = "SELECT COUNT(1) as notifAdmitted
-			 FROM tb_class_enrolled as e
-            LEFT join tb_class as a on a.id = e.CLASS_ID
-            WHERE a.TEACHER = $id AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'";
+    $query = "SELECT COUNT(DISTINCT a.CLASS_CODE) as notifAdmitted
+          FROM tb_class_enrolled AS e
+          LEFT JOIN tb_class AS a ON a.id = e.CLASS_ID
+          WHERE a.TEACHER = $id AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'";
 
     $result = mysqli_query($mysqli, $query);
 
@@ -29,7 +29,8 @@ if(!empty($_SESSION['user_id'])) {
 			 FROM tb_class_enrolled as e
             LEFT join tb_user as u on u.id = e.STUDENT
             LEFT join tb_class as a on a.id = e.CLASS_ID
-            WHERE a.TEACHER = $id  AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'";
+            WHERE a.TEACHER = $id AND a.STATUS = 'ON' AND e.STATUS = 'PENDING'
+            GROUP BY a.CLASS_NAME";
 
     $resultContent = mysqli_query($mysqli, $content);
 

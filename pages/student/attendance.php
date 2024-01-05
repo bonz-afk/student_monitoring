@@ -14,94 +14,7 @@ $current_dropdown = 'attendance'
     <link rel="stylesheet" href="../../common/css/common.css">
     <link rel="stylesheet" href="../../common/css/nav.css">
     <link rel="stylesheet" href="../../common/css/modal.css">
-    <style>
-        .attendance-container{
-            transition: margin-left 0.3s;
-        }
-
-        .attendance-content{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
-            margin: 0 auto;
-            overflow-y: auto;
-            overflow-x: hidden;
-            background-color: #FFFFFF;
-            border-radius: 20px;
-            max-width: 1522px;
-        }
-
-        .attendance-title{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .attendance-title p{
-            font-size: 45px;
-            font-weight: 900;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .attendance-item-container{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 50px;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-        .student-classes.custom-select-class{
-            background-color: transparent;
-            border-bottom: 1px solid #800000;
-            border-radius: 0;
-            max-width: 195px;
-        }
-
-        .student-classes-select:focus{
-            outline: 0;
-        }
-
-        .student-classes-select {
-            appearance: none;
-            width: 100%;
-            height: 35px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 0;
-            background-color: transparent;
-            text-indent: 10px;
-            font-size: 20px;
-            color: #800000;
-            padding: 0 48px 0 0;
-            cursor: pointer;
-        }
-
-        .student-class.font-mont{
-            font-size: 45px;
-        }
-
-        @media only screen and (max-width: 1518px) {
-            .attendance-content{
-                max-width: 700px;
-            }
-        }
-
-
-        @media only screen and (max-width: 802px) {
-            .attendance-content{
-                max-width: 600px !important;
-            }
-        }
-
-        @media only screen and (max-width: 616px) {
-            .attendance-content{
-                max-width: 350px !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../../common/css/student/attendance.css">
 </head>
 <body>
 <?php include_once $_SERVER["DOCUMENT_ROOT"]. "/student_monitoring/nav.php"?>
@@ -112,14 +25,21 @@ $current_dropdown = 'attendance'
        <div class="attendance-content">
            <p class="student-class font-mont" id="time" style="color: #000;text-align: center">   </p>
            <div class="attendance-item-container">
-            <span class="student-classes custom-select-class">
-                <select  class="student-classes-select" id="student-classes-select" name="student-classes-select" >
-                    <option value="">Class</option>
-                    <?php foreach($studentClassList as $classAttend){ ?>
-                        <option value="<?php echo $classAttend['classId'] ?>"><?php echo $classAttend['CLASS_NAME'] ?></option>
-                    <?php } ?>
-                </select>
-            </span>
+                <span class="student-classes custom-select-class">
+                    <select  class="student-classes-select" id="student-classes-term" name="student-classes-term" >
+                        <option value="">Term</option>
+                        <option value="1">Prelims to Mid Terms</option>
+                        <option value="2">Semifinals to Finals</option>
+                    </select>
+                </span>
+               <span class="student-classes custom-select-class">
+                    <select  class="student-classes-select" id="student-classes-select" name="student-classes-select" >
+                        <option value="">Class</option>
+                        <?php foreach($studentClassList as $classAttend){ ?>
+                            <option value="<?php echo $classAttend['CLASS_CODE']  ?> | <?php echo $classAttend['TYPE']  ?>"><?php echo $classAttend['CLASS_NAME'].' '.substr($classAttend['TYPE'], 0,3); ?></option>
+                        <?php } ?>
+                    </select>
+                </span>
                <button class="btn-maroon" onclick="attendance()"><b>Attendance</b></button>
            </div>
        </div>

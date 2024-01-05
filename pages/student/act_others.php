@@ -14,166 +14,8 @@ $current_dropdown = 'activities'
     <link rel="stylesheet" href="../../common/css/common.css">
     <link rel="stylesheet" href="../../common/css/nav.css">
     <link rel="stylesheet" href="../../common/css/modal.css">
-    <style>
-        .act-container{
-            transition: margin-left 0.3s;
-        }
+    <link rel="stylesheet" href="../../common/css/student/act_others.css">
 
-        .act-content{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
-            margin: 0 auto;
-            overflow-y: auto;
-            overflow-x: hidden;
-            background-color: #FFFFFF;
-            border-radius: 20px;
-            max-width: 1522px;
-        }
-
-        .act-item-container{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            /* flex-wrap: wrap; */
-            width: 800px;
-        }
-
-        .act-title{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .act-title p{
-            font-size: 45px;
-            font-weight: 900;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .exam.custom-select-class{
-            display: block;
-            position: relative;
-            width: 100%;
-            background-color: #e0e2e4;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 15px 0;
-            max-width: 370px;
-        }
-
-        .act-select:focus{
-            outline: 0;
-        }
-
-        .act-select {
-            appearance: none;
-            width: 100%;
-            height: 35px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 0;
-            background-color: transparent;
-            text-indent: 10px;
-            font-size: 20px;
-            color: #800000;
-            padding: 0 48px 0 0;
-            cursor: pointer;
-        }
-
-        .act-form{
-            display: flex;
-            margin: 0 auto;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-        .act-input{
-            width: 100%;
-            height: 35px;
-            max-width: 350px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 0;
-            background-color: #e0e2e4;
-            padding: 10px;
-            text-indent: 10px;
-            font-size: 20px;
-            color: #800000;
-        }
-
-        .act-input::placeholder{
-            color: #800000;
-        }
-
-        .act-input:focus,.college-select:focus{
-            outline: 0;
-        }
-        .exam.btn-save{
-            padding: 15px 70px;
-        }
-
-        .act-item-container:first-child{
-            margin-top: 40px;
-        }
-
-        @media only screen and (max-width: 1518px) {
-            .act-content{
-                max-width: 700px;
-            }
-            .act-item-container{
-                gap: 0 !important;
-                flex-wrap: wrap;
-                margin: 0 auto;
-                width: 100%;
-                display: flex;
-            }
-            .input-container{
-                align-items: center !important;
-            }
-        }
-
-
-        @media only screen and (max-width: 802px) {
-            .act-content{
-                max-width: 600px !important;
-            }
-        }
-
-        @media only screen and (max-width: 616px) {
-            .act-content{
-                max-width: 350px !important;
-            }
-            .act-input,.content-with-valid{
-                max-width: 200px !important;
-            }
-
-            .exam.custom-select-class,.content-with-valid{
-                max-width: 223px !important;
-            }
-        }
-
-        .content-with-valid {
-            display: flex;
-            justify-content: center;
-            align-items: start;
-            flex-direction: column;
-            max-width: 370px;
-            width: 100%;
-        }
-
-        .input-container{
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-            align-items: start;
-            flex-direction: column;
-            margin: 0 auto;
-        }
-    </style>
     <script src="https://kit.fontawesome.com/0dffe12a1d.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -187,10 +29,10 @@ $current_dropdown = 'activities'
         <div class="act-item-container">
             <div class="input-container">
                      <span class="exam custom-select-class">
-                            <select  class="act-select" id="act-class" name="act-class">
+                            <select  class="act-select" id="act-class" name="act-class" onchange="filterTypeAct()">
                                 <option value="">Class</option>
                                 <?php foreach($studentClassList as $classList){ ?>
-                                    <option value="<?php echo $classList['classId'] ?>"><?php echo $classList['CLASS_NAME'].' '.substr($classList['TYPE'], 0,3) ?></option>
+                                    <option value="<?php echo $classList['CLASS_CODE']  ?> | <?php echo $classList['TYPE']  ?>"><?php echo $classList['CLASS_NAME'].' '.substr($classList['TYPE'], 0,3); ?></option>
                                 <?php } ?>
                             </select>
                      </span>
@@ -202,9 +44,6 @@ $current_dropdown = 'activities'
                       <span class="exam custom-select-class">
                             <select  class="act-select" id="act-type" name="act-type">
                                 <option value="">Type</option>
-                                <option value="ACTIVITY">Activity</option>
-                                <option value="EXPERIMENT">Experiment</option>
-                                <option value="OTHERS">Others</option>
                             </select>
                         </span>
                 <small class="message message-act-type"></small>

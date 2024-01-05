@@ -1,0 +1,101 @@
+.college-container {
+    transition: margin-left 0.3s;
+}
+.college-container-title{
+    display: flex;
+    justify-content: center;
+}
+.college-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.college.font-mont {
+    font-size: 50px;
+}
+.list-college-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.college-main{
+    margin: 100px auto;
+}
+
+.college-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #FFFFFF;
+    color: #000000;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 10px;
+    transition: width 0.3s, height 0.3s;
+    cursor: pointer;
+}
+
+.college-item:hover{
+    text-decoration: none;
+    font-size: 30px;
+}
+
+
+.college-item:hover img{
+    width: 15rem !important;
+    height: 15rem !important;
+}
+
+.college-item:hover p{
+    width: 200px;
+}
+
+.college-item-content p{
+    width: 130px;
+    text-align: center;
+    margin: 10px 0 0;
+    letter-spacing: 1px;
+}
+
+.college-item-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 1148px) {
+    .college-container{
+        display: block;
+        margin-left: 0;
+    }
+
+    .college-container.hide{
+        display: none;
+    }
+
+    .college-item-content p {
+        width: 100%;
+        max-width: 110px;
+    }
+
+    .college-item:hover p {
+        width: unset;
+    }
+
+    .college.font-mont {
+        font-size: 30px;
+    }
+
+}
+@media only screen and (max-width: 668px) {
+    .list-college-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+}

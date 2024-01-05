@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="student-with-btn">
                                         <span style="text-align: start"><small>Student: </small> <b><?php echo $list['fullname']; ?></b></span>
-                                        <button class="admit btn-cancel" onclick="createClass('admit',<?php echo $list['enrolledid'] ?>)">Admit</button>
+                                        <button class="admit btn-cancel" onclick="createClass('admit',<?php echo $list['enrolledid'] ?>,'<?php echo $list['CLASS_CODE'] ?>')">Admit</button>
                                     </div>
 
                                 </li>
@@ -93,8 +93,10 @@
                         <li><a href="http://localhost/student_monitoring/pages/student/exam-quiz.php" class="sidebar-link <?php echo $current_dropdown === 'exam' ? 'active-item' : ''; ?>">Exam & Quizzes</a></li>
                         <li><a href="http://localhost/student_monitoring/pages/student/act_others.php" class="sidebar-link <?php echo $current_dropdown === 'activities' ? 'active-item' : ''; ?>">Activities & Others</a></li>
                     </ul>
-                <?php }}?>
-<!--                <a class="sidebar-link --><?php //echo $current_page === 'assessment' && $current_dropdown === null ? 'active-item' : ''; ?><!--" href="assessment.php" style="color: white">Assessment</a>-->
+                <?php }?>
+                <a class="sidebar-link  <?php echo $current_page === 'student-monitoring' && $current_dropdown === null ? 'active-item' : ''; ?>" href="http://localhost/student_monitoring/pages/student/student_monitoring.php" style="color: white">Student Monitoring</a>
+                <?php }?>
+            <!--                <a class="sidebar-link --><?php //echo $current_page === 'assessment' && $current_dropdown === null ? 'active-item' : ''; ?><!--" href="assessment.php" style="color: white">Assessment</a>-->
 <!--            --><?php //if ($current_page === 'assessment') { ?>
 <!--            <ul class="dropdown-container">-->
 <!--                <li><a href="#" class="sidebar-link --><?php //echo $current_dropdown === 'teacher' ? 'active-item' : ''; ?><!--">Attendance</a></li>-->

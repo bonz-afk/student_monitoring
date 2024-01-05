@@ -47,7 +47,6 @@
                     <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Lec/Lab</th>
                         <th>Type</th>
                         <th>Score</th>
                         <th>Action</th>
@@ -80,7 +79,6 @@
                     <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Lec/Lab</th>
                         <th>Type</th>
                         <th>Score</th>
                         <th>Action</th>

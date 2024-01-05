@@ -12,14 +12,14 @@
                                 <span class="custom-select-class">
                                     <select  class="college-select" id="create-type" name="create-type">
                                         <option value="">Type</option>
-                                        <option value="LABORATORY">Laboratory</option>
                                         <option value="LECTURE">Lecture</option>
+                                        <option value="BOTH">Lecture & Laboratory</option>
                                     </select>
                                 </span>
                                 <small class="message message-type"></small>
                             </div>
                             <div class="create-class-item--content">
-                                <input type="text" class="creat-class-input" id="class-academic-year" name="class-academic-year" placeholder="Academic Year">
+                                <input type="text" class="create-class-input" id="class-academic-year" name="class-academic-year" placeholder="Academic Year">
                                 <small class="message message-class-academic-year"></small>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                     <div class="create-class-item">
                         <div class="create-class-item-content">
                             <div class="create-class-item--content">
-                                <input type="text" class="creat-class-input" id="className" name="className" placeholder="Class Name">
+                                <input type="text" class="create-class-input" id="className" name="className" placeholder="Class Name">
                                 <small class="message message-className"></small>
                             </div>
                             <div class="create-class-item--content">
@@ -77,7 +77,7 @@
                                     <select  class="college-select" id="create-course" name="create-course">
                                         <option value="">Course</option>
                                         <?php foreach ($courseData as $course) {?>
-                                            <option value="<?php echo $course['COURSE_CODE'] ?>"><?php echo $course['COURSE_DESC'] ?></option>
+                                            <option value="<?php echo $course['COURSE_CODE'] ?>"><?php echo $course['COURSE_CODE'] ?></option>
                                         <?php }?>
                                     </select>
                                 </span>
@@ -149,14 +149,15 @@
                     <div class="create-class-item">
                         <div class="create-class-item-content">
                             <div class="create-class-item--content">
-                                <span class="custom-select-class">
-                                    <select  class="college-select" id="update-create-type" name="update-create-type">
-                                        <option value="">Type</option>
-                                        <option value="LABORATORY">Laboratory</option>
-                                        <option value="LECTURE">Lecture</option>
-                                    </select>
-                                </span>
-                                <small class="message message-update-type"></small>
+<!--                                <span class="custom-select-class">-->
+<!--                                    <select  class="college-select" id="update-create-type" name="update-create-type">-->
+<!--                                        <option value="">Type</option>-->
+<!--                                        <option value="LABORATORY">Laboratory</option>-->
+<!--                                        <option value="LECTURE">Lecture</option>-->
+<!--                                    </select>-->
+<!--                                </span>-->
+<!--                                <small class="message message-update-type"></small>-->
+                                <input type="text" class="creat-class-input" id="update-create-type" name="update-create-type" placeholder="" READONLY>
                             </div>
                             <div class="create-class-item--content">
                                 <input type="text" class="creat-class-input" id="update-class-academic-year" name="update-class-academic-year" placeholder="Academic Year">
@@ -233,6 +234,25 @@
                                 </span>
                                 <small class="message message-update-section"></small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="create-class-item">
+                        <div class="create-class-item-content">
+                            <div class="create-class-item--content">
+                                <label><b>Total Attendance</b></label>
+                                <input type="text" class="creat-class-input" id="update-class-att" name="update-class-att" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2" placeholder="Total Attendance">
+                                <small class="message message-update-class-att"></small>
+                            </div>
+                            <div class="create-class-item--content">
+                                <label><b>Total Quizzes</b></label>
+                                <input type="text" class="creat-class-input" id="update-class-quiz" name="update-class-quiz" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2" placeholder="Total Quizzes">
+                                <small class="message message-update-class-quiz"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="create-class-item">
+                        <div class="create-class-item-content" id="lecOrLab">
+
                         </div>
                     </div>
                     <div class="create-class-item">

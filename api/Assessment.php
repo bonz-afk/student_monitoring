@@ -39,14 +39,14 @@ if($process == 'search_filter'){
                 UPPER(SUBSTRING(u.FIRSTNAME, 1, 1)), LOWER(SUBSTRING(u.FIRSTNAME, 2)),
                 ' ',
                 UPPER(LEFT(u.MIDDLENAME, 1)),'.'
-            ) as fullname, 
+            ) as fullname, a.CLASS_CODE,
             e.id as enrolledId,c.COURSE_CODE as c_code, c.COURSE_DESC,a.CLASS_NAME,a.SECTION,e.STATUS as statusEnroll, a.id as enrollClass, u.id as uid, 
-            CONCAT(UPPER(SUBSTRING(a.TYPE, 1, 1)), LOWER(SUBSTRING(a.TYPE, 2))) AS type_formatted
+            CONCAT(UPPER(SUBSTRING(a.TYPE, 1, 1)), LOWER(SUBSTRING(a.TYPE, 2))) AS type_formatted,a.TYPE
             FROM tb_class_enrolled as e
             LEFT join tb_user as u on u.id = e.STUDENT
             LEFT join tb_class as a on a.id = e.CLASS_ID
             LEFT join tb_course c on c.ID = e.id
-            WHERE e.STATUS <> 'OFF' AND c.STATUS = 'ON'  $queryString";
+            WHERE e.STATUS = 'ON'  AND c.STATUS = 'ON'  $queryString";
 
 
             $result = mysqli_query($mysqli, $sql);
@@ -77,6 +77,8 @@ if($process == 'attendance'){
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $classId = $_GET['classId'];
         $studentId = $_GET['studentId'];
+        $type = $_GET['type'];
+        $idmoto = $_GET['id'];
 
         $sql = "SELECT CONCAT(
                 UPPER(SUBSTRING(u.LASTNAME, 1, 1)), LOWER(SUBSTRING(u.LASTNAME, 2)),
@@ -87,8 +89,8 @@ if($process == 'attendance'){
             ) as fullname, CONCAT(UPPER(SUBSTRING(c.TYPE, 1, 1)), LOWER(SUBSTRING(c.TYPE, 2))) AS type_formatted,
             a.id as attId, DATE(a.TIME_IN) as date_only, a.STATUS, c.CLASS_NAME FROM tb_attendance as a
             LEFT join tb_user as u on u.id = a.STUDENT_ID
-            LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = ? AND a.STUDENT_ID = ?";
+            LEFT join tb_class as c on a.CLASS_CODE = c.CLASS_CODE
+            WHERE a.CLASS_CODE = ? AND a.STUDENT_ID = ? AND a.TYPE = '$type' AND c.TYPE = '$type'";
 
 // Create a prepared statement
         $stmtAtt = $mysqli->prepare($sql);
@@ -97,7 +99,7 @@ if($process == 'attendance'){
             die('Database query failed: ' . mysqli_error($mysqli));
         }
 
-        $stmtAtt->bind_param("ii", $classId, $studentId);
+        $stmtAtt->bind_param("si", $classId, $studentId);
         $stmtAtt->execute();
 
 // Check for errors
@@ -124,8 +126,8 @@ if($process == 'attendance'){
             ) as fullname, CONCAT(UPPER(SUBSTRING(c.TYPE, 1, 1)), LOWER(SUBSTRING(c.TYPE, 2))) AS type_formatted,
             a.id as attId, c.CLASS_NAME  FROM tb_class_enrolled as a
             LEFT join tb_user as u on u.id = a.STUDENT
-            LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = $classId AND a.STUDENT = $studentId";
+            LEFT join tb_class as c on a.id = c.id
+            WHERE c.id = $idmoto AND a.STUDENT = $studentId";
 
             $result = mysqli_query($mysqli, $query);
 
@@ -160,8 +162,10 @@ if($process == 'attendance'){
 
 if($process == 'score'){
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $id = $_GET['id'];
         $classId = $_GET['classId'];
         $studentId = $_GET['studentId'];
+        $type = $_GET['type'];
 
         $sql = "SELECT CONCAT(
                 UPPER(SUBSTRING(u.LASTNAME, 1, 1)), LOWER(SUBSTRING(u.LASTNAME, 2)),
@@ -172,8 +176,8 @@ if($process == 'score'){
             ) as fullname, CONCAT(UPPER(SUBSTRING(c.TYPE, 1, 1)), LOWER(SUBSTRING(c.TYPE, 2))) AS type_formatted,
             a.id as scoreId, DATE(a.EXAM_DATE) as date_only, c.CLASS_NAME, a.TERM, a.TYPE, a.SCORE FROM tb_score as a
             LEFT join tb_user as u on u.id = a.STUDENT_ID
-            LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = ? AND a.STUDENT_ID = ? AND (a.TYPE = 'PE' OR a.TYPE = 'ME' OR a.TYPE = 'SE' OR a.TYPE = 'FE' OR a.TYPE = 'QUIZ')";
+            LEFT join tb_class as c on a.CLASS_CODE = c.CLASS_CODE
+            WHERE a.CLASS_CODE = ? AND a.STUDENT_ID = ? AND c.TYPE ='$type' AND a.CLASS_TYPE = '$type' AND (a.TYPE = 'PE' OR a.TYPE = 'ME' OR a.TYPE = 'SE' OR a.TYPE = 'FE' OR a.TYPE = 'QUIZ')";
 
 // Create a prepared statement
         $stmtScore = $mysqli->prepare($sql);
@@ -182,7 +186,7 @@ if($process == 'score'){
             die('Database query failed: ' . mysqli_error($mysqli));
         }
 
-        $stmtScore->bind_param("ii", $classId, $studentId);
+        $stmtScore->bind_param("si", $classId, $studentId);
         $stmtScore->execute();
 
 // Check for errors
@@ -210,7 +214,7 @@ if($process == 'score'){
             a.id as attId, c.CLASS_NAME  FROM tb_class_enrolled as a
             LEFT join tb_user as u on u.id = a.STUDENT
             LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = $classId AND a.STUDENT = $studentId";
+            WHERE a.CLASS_ID = $id AND a.STUDENT = $studentId";
 
             $result = mysqli_query($mysqli, $query);
 
@@ -245,8 +249,10 @@ if($process == 'score'){
 
 if($process == 'others'){
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $id = $_GET['id'];
         $classId = $_GET['classId'];
         $studentId = $_GET['studentId'];
+        $type = $_GET['type'];
 
         $sql = "SELECT CONCAT(
                 UPPER(SUBSTRING(u.LASTNAME, 1, 1)), LOWER(SUBSTRING(u.LASTNAME, 2)),
@@ -257,8 +263,8 @@ if($process == 'others'){
             ) as fullname, CONCAT(UPPER(SUBSTRING(c.TYPE, 1, 1)), LOWER(SUBSTRING(c.TYPE, 2))) AS type_formatted,
             a.id as scoreId, DATE(a.EXAM_DATE) as date_only, c.CLASS_NAME, a.TERM,CONCAT(UPPER(SUBSTRING(a.TYPE, 1, 1)), LOWER(SUBSTRING(a.TYPE, 2))) AS type_others, a.SCORE FROM tb_score as a
             LEFT join tb_user as u on u.id = a.STUDENT_ID
-            LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = ? AND a.STUDENT_ID = ? AND (a.TYPE = 'ACTIVITY' OR a.TYPE = 'EXPERIMENT' OR a.TYPE = 'OTHERS')";
+            LEFT join tb_class as c on a.CLASS_CODE = c.CLASS_CODE
+            WHERE a.CLASS_CODE = ? AND a.STUDENT_ID = ? AND c.TYPE = '$type' AND  a.CLASS_TYPE = '$type' AND (a.TYPE = 'ACTIVITY' OR a.TYPE = 'EXPERIMENT' OR a.TYPE = 'OTHERS')";
 
 // Create a prepared statement
         $stmtScore = $mysqli->prepare($sql);
@@ -267,7 +273,7 @@ if($process == 'others'){
             die('Database query failed: ' . mysqli_error($mysqli));
         }
 
-        $stmtScore->bind_param("ii", $classId, $studentId);
+        $stmtScore->bind_param("si", $classId, $studentId);
         $stmtScore->execute();
 
 // Check for errors
@@ -297,7 +303,7 @@ if($process == 'others'){
             a.id as attId, c.CLASS_NAME  FROM tb_class_enrolled as a
             LEFT join tb_user as u on u.id = a.STUDENT
             LEFT join tb_class as c on a.CLASS_ID = c.id
-            WHERE a.CLASS_ID = $classId AND a.STUDENT = $studentId";
+            WHERE a.CLASS_ID = $id AND a.STUDENT = $studentId";
 
             $result = mysqli_query($mysqli, $query);
 
